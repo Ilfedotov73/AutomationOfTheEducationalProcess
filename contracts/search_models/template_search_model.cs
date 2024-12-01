@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace contracts.search_models {
     public class template_search_model {
-        public int id { get; set; }
-        public string name { get; set; } = string.Empty;
-        public int author_id { get; set; }
+        public int? id { get; set; }
+        public string? name { get; set; } = string.Empty;
     }
 }

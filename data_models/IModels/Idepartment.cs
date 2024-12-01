@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace data_models.IModels {
     public interface Idepartment : Iid {
         string name { get; set; }
-        int faculty_id { get; set; }
+        int FacultyId { get; set; }
     }
 }

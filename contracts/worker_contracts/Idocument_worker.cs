@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace contracts.worker_contracts {
     public interface Idocument_worker {
-        public void create_document(Idocumnet model);
+        public void create_document(Idocument model);
         public List<int> read_temp_file(int template_id);
-        public Idata_info prepare_data(Idocumnet model);
+        public Idata_info prepare_data(Idocument model);
         public void save_doc_in_file(byte[] data, string file_path);
     }
 }

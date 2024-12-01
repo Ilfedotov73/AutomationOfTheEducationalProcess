@@ -8,6 +8,5 @@ namespace data_models.IModels {
     public interface Itemplate : Iid {
         string name { get; }
         string file_path { get; }
-        int author_id { get; }
     }
 }

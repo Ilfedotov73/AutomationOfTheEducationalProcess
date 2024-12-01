@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace data_models.IModels {
-    public interface Idocumnet : Iid {
+    public interface Idocument : Iid {
         string name { get; }
         string file_path { get; set; }
-        int author_id { get; }
+        int UserId { get; }
         enum_file_format_type file_format_type { get; }
-        int template_id { get; }
+        enum_document_type document_type { get; }
+        int TemplateId { get; }
     }
 }

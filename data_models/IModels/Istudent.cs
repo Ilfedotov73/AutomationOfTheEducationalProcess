@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace data_models.IModels {
     public interface Istudent : Iid {
         string fio { get; }
-        int group_id { get; }
+        int StudentGroupId { get; }
         int grade_book_num { get; }
     }
 }

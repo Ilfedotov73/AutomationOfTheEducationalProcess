@@ -8,6 +8,6 @@ namespace data_models.IModels {
     public interface Idirection : Iid{
         string full_name { get; }
         string alt_name { get; }
-        int department_id { get; }
+        int DepartmentId { get; }
     }
 }

@@ -10,6 +10,5 @@ namespace contracts.binding_models {
         public int id { get; set; }
         public string name { get; set; } = string.Empty;
         public string file_path { get; set; } = string.Empty;
-        public int author_id { get; set; }
     }
 }

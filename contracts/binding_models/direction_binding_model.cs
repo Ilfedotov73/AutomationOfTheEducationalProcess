@@ -10,6 +10,6 @@ namespace contracts.binding_models {
         public int id { get; set; }
         public string full_name { get; set; } = string.Empty;
         public string alt_name { get; set; } = string.Empty;
-        public int department_id { get; set; }
+        public int DepartmentId { get; set; }
     }
 }

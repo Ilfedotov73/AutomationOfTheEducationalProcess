@@ -9,7 +9,8 @@ namespace contracts.search_models {
     public class document_search_model {
         public int? id { get; set; }
         public string? name { get; set; }
-        enum_file_format_type? file_format_type { get; set; }
+        public enum_file_format_type? file_format_type { get; set; }
+        public enum_document_type? document_type { get; set; }
         public int? author_id { get; set; }
         public int? template_id { get; set; }
     }

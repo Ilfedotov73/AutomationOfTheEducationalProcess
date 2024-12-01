@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace data_models.IModels {
     public interface Istudent_group  : Iid {
-        int direction_id { get; }
+        int DirectionId { get; }
         int course_num { get; }
         int semester_num { get; }
         int group_num { get; }
-        List<int> student_ids { get; }
     }
 }

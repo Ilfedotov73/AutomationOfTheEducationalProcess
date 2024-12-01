@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace contracts.binding_models {
-    public class department_binding_model : Idepartment {
+namespace contracts.storage_contracts.db_models {
+    public class Faculty : Ifaculty {
         public int id { get; set; }
         public string name { get; set; } = string.Empty;
-        public int FacultyId { get; set; }
+
+        public List<Department> departments { get; set; } = new();
     }
 }

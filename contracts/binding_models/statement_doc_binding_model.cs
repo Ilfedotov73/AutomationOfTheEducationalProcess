@@ -12,11 +12,13 @@ namespace contracts.binding_models {
         public int id { get; set; }
         public string name { get; set; } = string.Empty;
         public string file_path { get; set; } = string.Empty;
-        public int author_id { get; set; }
+        public int UserId { get; set; }
         public enum_file_format_type file_format_type { get; set; }
-        public int template_id { get; set; }
+
+        public enum_document_type document_type { get; set; } = enum_document_type.statement_document;
+        public int TemplateId { get; set; }
 
         public int student_group_id { get; set; }
-        public Dictionary<int, (Istudent, int)> exam_result_list { get; set; } = new(); 
+        public Dictionary<int, (Istudent, int)> exam_result_list { get; set; } = new();
     }
 }

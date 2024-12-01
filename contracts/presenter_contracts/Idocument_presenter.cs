@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace contracts.presenter_contracts {
     public interface Idocument_presenter {
-        public document_view_model make_document_presenter(Idocumnet model);
-        public List<document_view_model> make_document_list_presenter(List<Idocumnet> models);
+        public document_view_model make_document_presenter(Idocument model);
+        public List<document_view_model> make_document_list_presenter(List<Idocument> models);
     }
 }
