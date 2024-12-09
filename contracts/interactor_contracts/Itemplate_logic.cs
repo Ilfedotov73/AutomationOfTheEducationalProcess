@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace contracts.interactor_contracts {
     public interface Itemplate_logic {
         public List<template_binding_model> get_template_list();
-        public List<template_binding_model> get_template_filltered_lst(template_search_model search_model);
-        public template_binding_model get_template_info(template_search_model search_model);
-        public void insert_template(template_binding_model model);
+        public template_binding_model? get_template_info(template_search_model search_model);
+        public byte[] insert_template(template_binding_model model);
         public void delete_template(template_binding_model model);
-        public void edit_template(template_binding_model model);
+        public void edit_template(template_binding_model model, byte[] rewire_data);
+        public void check_model(template_binding_model model, bool onDelete);
         public byte[] on_export_template(template_search_model search_model);
     }
 }

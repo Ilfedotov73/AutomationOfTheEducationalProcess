@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace contracts.interactor_contracts {
     public interface Idepartment_logic {
-        public List<department_binding_model> get_department_list();
-        public List<department_binding_model> get_department_filltered_list(department_search_model search_model);
-        public department_binding_model get_department_info(department_search_model search_model);
+        public List<department_binding_model> get_department_list(department_search_model search_model);
+        public department_binding_model? get_department_info(department_search_model search_model);
     }
 }

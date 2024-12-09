@@ -9,6 +9,6 @@ using System.Threading.Tasks;
 namespace contracts.interactor_contracts {
     public interface Ifaculty_logic {
         public List<faculty_binding_model> get_faculty_list();
-        public faculty_binding_model get_faculty_info(faculty_search_model search_model);
+        public faculty_binding_model? get_faculty_info(faculty_search_model search_model);
     }
 }

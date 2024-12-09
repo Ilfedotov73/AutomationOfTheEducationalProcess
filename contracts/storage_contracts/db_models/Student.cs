@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace contracts.storage_contracts.db_models {
     public class Student : Istudent {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string fio { get; set; } = string.Empty;
 

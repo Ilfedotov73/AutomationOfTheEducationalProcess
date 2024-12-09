@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace contracts.interactor_contracts {
     public interface Istudent_logic {
-        public List<student_binding_model> get_student_filltered_list(student_search_model search_model);
-        public student_binding_model get_student_info(student_search_model search_model);
+        public List<student_binding_model> get_student_list(student_search_model search_model);
+        public student_binding_model? get_student_info(student_search_model search_model);
     }
 }

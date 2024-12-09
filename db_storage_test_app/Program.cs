@@ -332,6 +332,7 @@ namespace db_storage_test_app {
         }
     }
     public class document_func() {
+        /*
         public void insert() {
             db_document_storage storage = new();
             storage.insert_document(new itp_doc_binding_model {
@@ -341,7 +342,9 @@ namespace db_storage_test_app {
                 file_format_type = data_models.Enums.enum_file_format_type.docx,
                 TemplateId = 1
             });
+        
         }
+        */
         public void select() {
             db_document_storage storage = new();
             var models = storage.get_document_list();
@@ -361,6 +364,7 @@ namespace db_storage_test_app {
             var model = storage.get_document_info(new contracts.search_models.document_search_model { id = 5 });
             Console.WriteLine("->" + model?.id + " " + model?.name + " " + model?.file_path + " " + model?.file_format_type + " " + model?.document_type);
         }
+        /*
         public void edit() {
             db_document_storage storage = new();
             storage.edit_docuemnt(new statement_doc_binding_model {
@@ -370,10 +374,13 @@ namespace db_storage_test_app {
                 document_type = data_models.Enums.enum_document_type.statement_document,
                 TemplateId = 1
             });
+        
         }
+        
         public void delete() {
             db_document_storage storage = new();
             storage.delete_docuemnt(new statement_doc_binding_model { id = 1 });
         }
+        */
     }
 }

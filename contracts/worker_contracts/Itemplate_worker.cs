@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace contracts.worker_contracts {
     public interface Itemplate_worker {
-        public void create_template_file(template_binding_model model);
-        public void save_template_in_file(byte[] data, string file_path);
+        public byte[] create_template_file(template_binding_model model);
+        public List<string> read_temp_file(template_binding_model model);
     }
 }
