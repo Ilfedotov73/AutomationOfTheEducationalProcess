@@ -80,6 +80,14 @@ namespace data_base_implement.implemnts {
                     .Include(x => x.student_groups).ThenInclude(x => x.direction)
                     .FirstOrDefault(x => x.id == search_model.id);
             }
+            if (!string.IsNullOrEmpty(search_model.fio)) {
+                return context.users
+                    .Include(x => x.department)
+                    .Include(x => x.documents).ThenInclude(x => x.template)
+                    .Include(x => x.student_groups).ThenInclude(x => x.students)
+                    .Include(x => x.student_groups).ThenInclude(x => x.direction)
+                    .FirstOrDefault(x => x.fio == search_model.fio);
+            }
             return null;
         }
     }

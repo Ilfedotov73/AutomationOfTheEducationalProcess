@@ -17,9 +17,6 @@ namespace worker.office_package.documents_description {
 
         public byte[]? create_document(itp_Info info) {
 
-            // todo
-            // Дорабоать шаблон для itp
-
             _office.create_docx();
             _office.create_paragraph(new docxParagraph {
                 texts = new List<(string, docxTextProperties)> { (info.title, new docxTextProperties { bold = true, size = "24" }) },

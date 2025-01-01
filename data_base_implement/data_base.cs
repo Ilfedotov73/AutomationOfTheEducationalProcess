@@ -20,7 +20,7 @@ namespace data_base_implement {
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             if (optionsBuilder.IsConfigured == false) {
-                optionsBuilder.UseSqlServer(@"Data Source=WIN-4HUIDGH3G02\SQLEXPRESS;
+                optionsBuilder.UseSqlServer(@"Data Source=FEDOTOVILIA\SQLEXPRESS;
                                             Initial Catalog=AutomationOfTheEducationalProcess;
                                             Integrated Security=True;
                                             MultipleActiveResultSets=True;

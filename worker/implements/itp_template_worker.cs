@@ -1,44 +1,42 @@
 ﻿using contracts.binding_models;
 using contracts.worker_contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using worker.office_package;
 using Microsoft.Office.Interop.Excel;
 using worker.office_package.documents_description.TEMPLATE;
 
 
 namespace worker.implements {
-    public class itp_template_worker : Itemplate_worker {
+    public class itp_template_worker : Itemplate_worker{
 
         private readonly itp_template_to_xlsx _template;
-        private readonly Application excel;
         public itp_template_worker(Icreate_xlsx_file xlsxImp) {
             _template = new(xlsxImp);
-            excel = new();
-        }
+        }   
 
         public byte[] create_template_file(template_binding_model model) {
-            var docuement = _template.create_template(new office_package.helper_models.itp_Info {
+            var document = _template.create_template(new office_package.helper_models.itp_Info {
                 title = model.name
             });
-            if (docuement == null) {
+            if (document == null) {
                 throw new Exception("Ошибка создания докумена шаблон");
+            }
+            // Создает какталог (если еще не создан)
+            if (!Directory.Exists(model.file_path)) {
+                Directory.CreateDirectory(model.file_path);
             }
 
             // Записывают массив байт в бинарный файл. Если файл не существует, он создается. Если существует, то перезаписывается
-            File.WriteAllBytes(model.file_path, docuement);
-            return docuement;
+            model.file_path += $"{model.name}.xlsx";
+            File.WriteAllBytes(model.file_path, document);
+
+            return document;
         }
 
         public List<string> read_temp_file(template_binding_model model) {
 
-            //todo
-            // Доработать для сложного файла
             List<string> results = new();
 
+            Application excel = new();
             Workbook wb = excel.Workbooks.Open(model.file_path);
             Worksheet ws = wb.Worksheets[1];
 
@@ -46,6 +44,8 @@ namespace worker.implements {
             foreach (string result in cell.Value) {
                 results.Add(result);
             }
+
+            excel.Quit();
             return results;
         }
     }

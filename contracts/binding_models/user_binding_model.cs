@@ -1,4 +1,5 @@
-﻿using data_models.Enums;
+﻿using contracts.storage_contracts.db_models;
+using data_models.Enums;
 using data_models.IModels;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,7 @@ namespace contracts.binding_models {
         public enum_academic_title academic_title { get; set; }
         public DateOnly year_of_award_at { get; set; }
         public string password { get; set; } = string.Empty;
+
+        public List<StudentGroup> studentGroups { get; set; } = new();
     }
 }

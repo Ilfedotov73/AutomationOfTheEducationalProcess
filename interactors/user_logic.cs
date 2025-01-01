@@ -5,6 +5,7 @@ using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace interactors {
             }
         }
 
-        public void check_model(user_binding_model model, bool obDelete = false) {
+        public void check_model(user_binding_model model, bool obDelete = false, bool onEdit = false) {
             if (string.IsNullOrEmpty(model.id.ToString())) {
                 throw new ArgumentNullException("user id is missing", nameof(model.id));
             }
@@ -73,9 +74,17 @@ namespace interactors {
             if (string.IsNullOrEmpty(model.password)) {
                 throw new ArgumentNullException("user password is missing", nameof(model.password));
             }
+            if (onEdit) {
+                return;
+            }
+
+            var user = get_user_info(new user_search_model { fio = model.fio });
+            if (user != null) {
+                throw new Exception("the user is already registered");
+            }
         }
 
-        public List<user_binding_model> get_user_list(user_search_model search_model) {
+        public List<user_binding_model> get_user_list(user_search_model? search_model) {
             var models = search_model == null ? _storage.get_user_list() : _storage.get_user_filltered_list(search_model);
             if (models.Count == 0) {
                 return new();
@@ -110,6 +119,7 @@ namespace interactors {
                 academic_title = model.academic_title,
                 year_of_award_at = model.year_of_award_at,
                 password = model.password,
+                studentGroups = model.student_groups,
             };
         }
     }

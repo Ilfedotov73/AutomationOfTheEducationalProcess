@@ -18,9 +18,6 @@ namespace worker.office_package.documents_description {
         public byte[]? create_document(st_info info) {
             _office.create_xlsx();
 
-            // todo 
-            // Доработать шаблон st
-
             _office.insert_cell_in_worksheet(new xlsxCellParameters {
                 column_name = "A",
                 row_index = 1,

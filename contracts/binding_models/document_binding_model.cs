@@ -15,7 +15,5 @@ namespace contracts.binding_models {
         public enum_file_format_type file_format_type { get; set; }
         public enum_document_type document_type { get; set; }
         public int TemplateId { get; set; }
-
-        
     }
 }

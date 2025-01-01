@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using worker.office_package.helper_enums;
 using worker.office_package.helper_models;
 
-namespace worker.office_package.implements {
+namespace worker.office_package.office_implements {
     public class create_to_xlsx : Icreate_xlsx_file {
         private SpreadsheetDocument? _spreadsheet;
         private SharedStringTablePart? _sharedStringTablePart;
@@ -179,6 +179,8 @@ namespace worker.office_package.implements {
             _spreadsheet = SpreadsheetDocument.Create(_stream, SpreadsheetDocumentType.Workbook);
             // Создаеам книгу в (в нех хранятся листы)
             var workbookpart = _spreadsheet.AddWorkbookPart();
+            workbookpart.Workbook = new Workbook();
+
             create_style(workbookpart);
 
             // Получем/создаем хранилище текстов для книги

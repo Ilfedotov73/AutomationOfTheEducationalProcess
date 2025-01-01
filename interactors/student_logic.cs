@@ -18,7 +18,7 @@ namespace interactors {
             _storage = storage;
         }
 
-        public List<student_binding_model> get_student_list(student_search_model search_model) {
+        public List<student_binding_model> get_student_list(student_search_model? search_model) {
             var models = search_model == null ? new() : _storage.get_student_filltered_list(search_model);
             if (models.Count == 0) {
                 return new();

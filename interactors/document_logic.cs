@@ -3,9 +3,12 @@ using contracts.interactor_contracts;
 using contracts.search_models;
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
+using contracts.worker_contracts;
 using data_models.Enums;
 using data_models.IModels;
 using worker;
+using worker.office_package;
+using worker.office_package.documents_description;
 
 namespace interactors {
     public class document_logic : Idocument_logic {
@@ -13,19 +16,24 @@ namespace interactors {
         private readonly Idocument_storage _storage;
         private readonly Itemplate_logic _template_logic;
 
-        public document_logic(Idocument_storage storage, Itemplate_logic template_logic) {
+        public document_logic(Idocument_storage storage, Itemplate_logic template_logic, 
+                                Icreate_docx_file _docxImp, Icreate_xlsx_file _xlsxImp,
+                                Itemplate_worker _templateWorker) {
             _storage = storage;
             _template_logic = template_logic;
+            _ = new document_itp_facade(_docxImp, _templateWorker);
+            _ = new document_st_facade(_docxImp, _xlsxImp);
         }
 
         public void insert_document(Idocument model) {
             check_model(model);
-            model.file_path += $"{model.name}" + $".{model.file_format_type}";
-
-            var template_info = _template_logic.get_template_info(new template_search_model { id = model.TemplateId });
 
             switch(model.document_type) {
                 case enum_document_type.individual_teacher_plan_document:
+                    var template_info = _template_logic.get_template_info(new template_search_model { id = model.TemplateId });
+                    if (template_info == null) {
+                        throw new Exception("operation get template is failed");
+                    }
                     document_itp_facade.is_function itp_funcs = document_itp_facade.get_function(model.file_format_type);
                     itp_funcs(model, template_info);
                     break;
@@ -64,16 +72,17 @@ namespace interactors {
             }
         }
 
-        public void check_model(Idocument model, bool onDelete = false) {
+        public void check_model(Idocument model, bool onDelete = false, bool onEdit = false) {
             if (string.IsNullOrEmpty(model.id.ToString())) {
                 throw new ArgumentNullException("document id is missing", nameof(model.id));
-            }
-            if (onDelete) {
-                return;
             }
             if (string.IsNullOrEmpty(model.file_path)) {
                 throw new ArgumentNullException("document file path is missing", nameof(model.file_path));
             }
+            if (onDelete) {
+                return;
+            }
+
             if (string.IsNullOrEmpty(model.UserId.ToString())) {
                 throw new ArgumentNullException("document author is missing", nameof(model.UserId));
             }
@@ -83,9 +92,24 @@ namespace interactors {
             if (string.IsNullOrEmpty(model.document_type.ToString())) {
                 throw new ArgumentNullException("document type is missing", nameof(model.document_type));
             }
+            if (onEdit) {
+                return;
+            }
+
+            var document = _storage.get_document_info(new document_search_model { name = model.name });
+            if (document != null) {
+                throw new Exception("the document is already created");
+            }
+
+            char[] invalidPathChars = Path.GetInvalidFileNameChars();
+            foreach (char i in invalidPathChars) {
+                if (model.name.Contains(i)) {
+                    throw new Exception("the filename is contains charactera are invalid in a path");
+                }
+            }
         }
 
-        public List<document_binding_model> get_document_list(document_search_model search_model) {
+        public List<document_binding_model> get_document_list(document_search_model? search_model) {
             var models = search_model == null ? _storage.get_document_list() : _storage.get_document_filltered_list(search_model);
             if  (models.Count == 0) {
                 return new();
@@ -111,7 +135,7 @@ namespace interactors {
         public byte[] on_export_docfile(document_search_model search_model) {
             var document = get_document_info(search_model);
             if (document == null) {
-                throw new Exception("Такого документа нет");
+                throw new Exception("operation get document is failed");
             }
 
             byte[] file = File.ReadAllBytes(document.file_path);

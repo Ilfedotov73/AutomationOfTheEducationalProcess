@@ -4,11 +4,6 @@ using contracts.search_models;
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
 using contracts.worker_contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace interactors {
     public class template_logic : Itemplate_logic {
@@ -23,7 +18,6 @@ namespace interactors {
 
         public byte[] insert_template(template_binding_model model) {
             check_model(model);
-            model.file_path += $"{model.name}.xlsx";
             byte[] document = _worker.create_template_file(model);
 
             if (_storage.insert_template(model) == false) {
@@ -32,11 +26,18 @@ namespace interactors {
             return document;
         }
 
-        public void edit_template(template_binding_model model, byte[] rewire_data) {
-            check_model(model);
+        public void edit_template(template_binding_model model, byte[] rewire_data, string? new_name = null) {
+            check_model(model,false,true);
 
             File.Exists(model.file_path);
             File.WriteAllBytes(model.file_path, rewire_data);
+
+            if (!string.IsNullOrEmpty(new_name)) {
+                string mote_to = new template_binding_model().file_path + $"{new_name}.xlsx";
+                File.Move(model.file_path, mote_to);
+                model.name = new_name;
+                model.file_path = mote_to;
+            }
 
             if (_storage.edit_tempalte(model) == false) {
                 throw new Exception("edit operation failed in database");
@@ -54,18 +55,34 @@ namespace interactors {
             }
         }
 
-        public void check_model(template_binding_model model, bool onDelete = false) {
+        public void check_model(template_binding_model model, bool onDelete = false, bool onEdit = false) {
             if (string.IsNullOrEmpty(model.id.ToString())) {
                 throw new ArgumentNullException("template id is missing", nameof(model.id));
+            }
+            if (string.IsNullOrEmpty(model.file_path)) {
+                throw new ArgumentNullException("template file path is missing", nameof(model.file_path));
             }
             if (onDelete) {
                 return;
             }
+
             if (string.IsNullOrEmpty(model.name)) {
                 throw new ArgumentNullException("template name is missing", nameof(model.name));
             }
-            if (string.IsNullOrEmpty(model.file_path)) {
-                throw new ArgumentNullException("template file path is missing", nameof(model.file_path));
+            if (onEdit) {
+                return;
+            }
+
+            var template = get_template_info(new template_search_model { name = model.name });
+            if (template != null) {
+                throw new Exception("the template is already created");
+            }
+
+            char[] invalidPathChars = Path.GetInvalidFileNameChars();
+            foreach (char i in invalidPathChars) {
+                if (model.name.Contains(i)) {
+                    throw new Exception("the filename is contains charactera are invalid in a path");
+                }
             }
         }
 

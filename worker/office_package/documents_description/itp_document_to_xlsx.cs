@@ -5,39 +5,42 @@ using worker.office_package.helper_models;
 
 namespace worker.office_package.documents_description {
     public class itp_document_to_xlsx {
-        public byte[] create_document(itp_Info info, string template_file_path) {
-            MemoryStream _stream = new();
+        public byte[] create_document(itp_Info info, string template_file_path, string temporary_path) {
 
-            SpreadsheetDocument template = SpreadsheetDocument.Open(template_file_path, true);
-            
+            byte[] templateData = File.ReadAllBytes(template_file_path);
+
+            temporary_path += ".xlsx";
+            File.WriteAllBytes(temporary_path, templateData);
+
+            SpreadsheetDocument newSpreadSheetDocument = SpreadsheetDocument.Open(temporary_path, true);
+
             // находим нужный лист
-            WorksheetPart? worksheetPart = getWorkSheetPartByName(template, "Лист1");
-            if (worksheetPart == null) {
+            WorksheetPart? _worksheetPart = getWorkSheetPartByName(newSpreadSheetDocument, "Лист");
+            if (_worksheetPart == null) {
                 return Array.Empty<byte>();
             }
 
             // получаем ячейку
-            Cell? cell = GetCell(worksheetPart.Worksheet, "A", 2);
+            Cell? cell = GetCell(_worksheetPart.Worksheet, "C", 2);
             if (cell == null) {
                 return Array.Empty<byte>();
             }
 
             // добавляем значения
             cell.CellValue = new CellValue($"{info.date}");
-            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-
-            // Создаем новый документ
-            SpreadsheetDocument newSpreadSheetDocument = SpreadsheetDocument.Create(_stream, SpreadsheetDocumentType.Workbook);
-            WorkbookPart workbookPart = newSpreadSheetDocument.AddWorkbookPart();
-            workbookPart.Workbook = new Workbook();
-            WorksheetPart newWorkSheetPart = workbookPart.AddNewPart<WorksheetPart>();
-
-            // Копируем изменные листы
-            newWorkSheetPart = worksheetPart;
-
+            cell.DataType = new EnumValue<CellValues>(CellValues.String);
+            Row row = GetRow(_worksheetPart.Worksheet, 2);
+            row.Append(cell);
+                
             newSpreadSheetDocument.WorkbookPart!.Workbook.Save();
             newSpreadSheetDocument.Dispose();
-            return _stream.ToArray();
+            
+            // получение значений из временного файла с последующим его удалением
+            byte[] file_data = File.ReadAllBytes(temporary_path);
+            File.Exists(temporary_path);
+            File.Delete(temporary_path);
+
+            return file_data;
         }
 
         private WorksheetPart? getWorkSheetPartByName(SpreadsheetDocument document, string sheet_name) {
@@ -60,7 +63,12 @@ namespace worker.office_package.documents_description {
             if (row == null) {
                 return null;
             }
-            return row.Elements<Cell>().First(c => string.Compare(c.CellReference.Value, column_name + row_index, true) == 0);
+            if (row.Elements<Cell>().Where(x => x.CellReference!.Value == column_name + row_index).Any()) {
+                return row.Elements<Cell>().First(c => string.Compare(c.CellReference.Value, column_name + row_index, true) == 0);
+            }
+            else {
+                return new Cell() { CellReference = column_name + row_index };
+            }
         }
 
         // Получаем строку в листе по индексу строки

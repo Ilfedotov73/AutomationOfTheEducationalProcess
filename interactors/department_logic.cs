@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace interactors {
-    internal class department_logic : Idepartment_logic {
+    public class department_logic : Idepartment_logic {
 
         private readonly Idepartment_storage _storage;
 
@@ -19,7 +19,7 @@ namespace interactors {
             _storage = storage;
         }
 
-        public List<department_binding_model> get_department_list(department_search_model search_model) {
+        public List<department_binding_model> get_department_list(department_search_model? search_model) {
             var models = search_model == null ? _storage.get_department_list() : _storage.get_department_filltered_list(search_model);
             if (models.Count == 0) {
                 return new();

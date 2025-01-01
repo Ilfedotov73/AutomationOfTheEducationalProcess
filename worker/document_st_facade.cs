@@ -10,7 +10,7 @@ namespace worker {
         private readonly Idocument_worker _documentWorker;
 
         public delegate void is_function(Idocument model, template_binding_model? template = null);
-        static is_function[]? funcs;
+        static is_function[] funcs = {};
 
         public document_st_facade(Icreate_docx_file _docxImp, Icreate_xlsx_file _xlsxImp) {
             _documentWorker = new st_document_worker(_docxImp, _xlsxImp);
@@ -19,7 +19,7 @@ namespace worker {
 
         public static is_function get_function(enum_file_format_type format) {
             if ((int)format > funcs.Length - 1) {
-                throw new Exception("Отсутствует адрес метода");
+                throw new Exception("missing method address");
             }
             return funcs[(int)format];
         }

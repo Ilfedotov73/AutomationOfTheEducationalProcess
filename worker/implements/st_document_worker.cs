@@ -26,7 +26,13 @@ namespace worker.implements {
                 throw new Exception("Ошибка создания документа");
             }
 
+            // Создает какталог (если еще не создан)
+            if (!Directory.Exists(model.file_path)) {
+                Directory.CreateDirectory(model.file_path);
+            }
+
             // Записывают массив байт в бинарный файл. Если файл не существует, он создается. Если существует, то перезаписывается
+            model.file_path += $"{model.name}" + $".{model.file_format_type}";
             File.WriteAllBytes(model.file_path, document);
         }
 
@@ -37,6 +43,13 @@ namespace worker.implements {
             if (document == null) {
                 throw new Exception("Ошибка создания документа");
             }
+
+            // Создает какталог (если еще не создан)
+            if (!Directory.Exists(model.file_path)) {
+                Directory.CreateDirectory(model.file_path);
+            }
+
+            model.file_path += $"{model.name}" + $".{model.file_format_type}";
             File.WriteAllBytes(model.file_path, document);
         }
 

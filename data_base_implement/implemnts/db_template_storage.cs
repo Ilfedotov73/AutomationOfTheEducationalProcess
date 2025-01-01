@@ -58,6 +58,11 @@ namespace data_base_implement.implemnts {
                     .Include(x => x.documents)
                     .FirstOrDefault(x => x.id == search_model.id);
             }
+            if (!string.IsNullOrEmpty(search_model.name)) {
+                return context.templates
+                    .Include(x => x.documents)
+                    .FirstOrDefault(x => x.name == search_model.name);
+            }
             return null;
         }
     }

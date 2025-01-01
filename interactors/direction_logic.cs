@@ -18,7 +18,7 @@ namespace interactors {
             _storage = storage;
         }
 
-        public List<direction_binding_model> get_direction_list(direction_search_model search_model) {
+        public List<direction_binding_model> get_direction_list(direction_search_model? search_model) {
             var models = search_model == null ? _storage.get_direction_list() : _storage.get_direction_filltered_list(search_model);
             if (models.Count == 0) {
                 return new();

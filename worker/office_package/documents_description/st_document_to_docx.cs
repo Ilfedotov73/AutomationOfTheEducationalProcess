@@ -12,9 +12,7 @@ namespace worker.office_package.documents_description {
 
         public byte[]? create_document(st_info info) {
 
-            // todo 
-            // Доработать шаблон st
-
+            _office.create_docx();
             _office.create_paragraph(new docxParagraph {
                 texts = new List<(string, docxTextProperties)> { (info.title, new docxTextProperties { bold = true, size = "24" }) },
                 text_properties = new docxTextProperties {

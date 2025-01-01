@@ -27,7 +27,7 @@ namespace contracts.storage_contracts.db_models {
         [Required]
         public enum_document_type document_type { get; set; }
 
-        public int TemplateId { get; set; }
+        public int TemplateId { get; set; } 
         public Template? template { get; set; }
 
         public static Document? insert(Idocument? model) {

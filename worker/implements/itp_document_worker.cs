@@ -11,10 +11,10 @@ namespace worker.implements {
 
         private readonly itp_document_to_docx _itpDocx;
         private readonly itp_document_to_xlsx _itpXlsx;
-        private readonly itp_template_worker _templateWorker;
+        private readonly Itemplate_worker _templateWorker;
 
         // Вызов из document_itp_facade
-        public itp_document_worker(Icreate_docx_file docxImp, itp_template_worker templateWorker) {
+        public itp_document_worker(Icreate_docx_file docxImp, Itemplate_worker templateWorker) {
             _itpDocx = new(docxImp);
             _itpXlsx = new();
             _templateWorker = templateWorker;
@@ -33,7 +33,13 @@ namespace worker.implements {
                 throw new Exception("Ошибка создания документа");
             }
 
+            // Создает какталог (если еще не создан)
+            if (!Directory.Exists(model.file_path)) {
+                Directory.CreateDirectory(model.file_path);
+            }
+
             // Записывают массив байт в бинарный файл. Если файл не существует, он создается. Если существует, то перезаписывается
+            model.file_path += $"{model.name}" + $".{model.file_format_type}";
             File.WriteAllBytes(model.file_path, document);
         }
 
@@ -45,11 +51,23 @@ namespace worker.implements {
 
             itp_Info info = (itp_Info)prepare_data(model);
 
-            var docuement = _itpXlsx.create_document(info, template.file_path);
-            if (docuement == Array.Empty<byte>()) {
+            string temporary = @"C:\Users\Ilfe\Documents\AutomationOfTheEducationalProcess\TEMPORARY\";
+            if (!Directory.Exists(temporary)) {
+                Directory.CreateDirectory(temporary);
+            }
+
+            var document = _itpXlsx.create_document(info, template.file_path, temporary + $"_{info.title}");
+            if (document == Array.Empty<byte>()) {
                 throw new Exception("Ошибка создания документа");
             }
-            File.WriteAllBytes(model.file_path, docuement);
+
+            // Создает какталог (если еще не создан)
+            if (!Directory.Exists(model.file_path)) {
+                Directory.CreateDirectory(model.file_path);
+            }
+
+            model.file_path += $"{model.name}" + $".{model.file_format_type}";
+            File.WriteAllBytes(model.file_path, document);
         }
 
         public Idata_info prepare_data(Idocument model, template_binding_model? template = null) {

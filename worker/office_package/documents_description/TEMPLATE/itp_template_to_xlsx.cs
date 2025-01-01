@@ -16,13 +16,17 @@ namespace worker.office_package.documents_description.TEMPLATE {
         public byte[]? create_template(itp_Info info) {
             _office.create_xlsx();
 
-            // todo 
-            // Доработать шаблон itp
             _office.insert_cell_in_worksheet(new xlsxCellParameters {
                 column_name = "A",
                 row_index = 1,
                 text = info.title,
                 style_info = xlsxStyleInfoType.Title
+            });
+            _office.insert_cell_in_worksheet(new xlsxCellParameters {
+                column_name = "A",
+                row_index = 2,
+                text = info.date.ToString(),
+                style_info = xlsxStyleInfoType.TextWithBorder
             });
 
 
