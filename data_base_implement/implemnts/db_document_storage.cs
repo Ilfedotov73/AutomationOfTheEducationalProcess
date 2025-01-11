@@ -69,6 +69,12 @@ namespace data_base_implement.implemnts {
 
         public Document? get_document_info(document_search_model search_model) {
             using var context = new data_base();
+            if (!string.IsNullOrEmpty(search_model.name)) {
+                return context.documets
+                    .Include(x => x.user)
+                    .Include(x => x.template)
+                    .FirstOrDefault(x => x.name == search_model.name);
+            }
             if (search_model.id.HasValue) {
                 return context.documets
                     .Include(x => x.user)

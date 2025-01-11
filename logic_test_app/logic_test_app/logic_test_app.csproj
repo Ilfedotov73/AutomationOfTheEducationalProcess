@@ -11,6 +11,7 @@
     <ProjectReference Include="..\..\contracts\contracts.csproj" />
     <ProjectReference Include="..\..\data_base_implement\data_base_implement.csproj" />
     <ProjectReference Include="..\..\interactors\interactors.csproj" />
+    <ProjectReference Include="..\..\presenter\presenter.csproj" />
     <ProjectReference Include="..\..\worker\worker.csproj" />
   </ItemGroup>
 

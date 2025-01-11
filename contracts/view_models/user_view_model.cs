@@ -13,9 +13,11 @@ namespace contracts.view_moedels {
         public string position { get; set; } = string.Empty;
         public string year_of_birth { get; set; } = string.Empty;
         public string academic_degree { get; set; } = string.Empty;
-        public string year_of_award_as { get; set; } = string.Empty;
+        public string year_of_award_ad { get; set; } = string.Empty;
         public string academic_title { get; set; } = string.Empty;
         public string year_of_award_at { get; set; } = string.Empty;
         public string password {  get; set; } = string.Empty;
+
+        public List<string> groups { get; set; } = new();
     }
 }

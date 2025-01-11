@@ -119,7 +119,8 @@ namespace interactors {
                 academic_title = model.academic_title,
                 year_of_award_at = model.year_of_award_at,
                 password = model.password,
-                studentGroups = model.student_groups,
+                department = model.department,
+                studentGroups = model.student_groups
             };
         }
     }

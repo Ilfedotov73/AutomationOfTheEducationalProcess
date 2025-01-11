@@ -65,6 +65,7 @@ namespace data_base_implement.implemnts {
                     .Include(x => x.department)
                     .Include(x => x.documents).ThenInclude(x => x.template)
                     .Include(x => x.student_groups).ThenInclude(x => x.students)
+                    .Include(x => x.student_groups).ThenInclude(x => x.direction)
                     .ToList();
             }
             return new();

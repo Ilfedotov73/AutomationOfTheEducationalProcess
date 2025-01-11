@@ -17,6 +17,9 @@ namespace contracts.storage_contracts.db_models {
 
         [Required]
         public string file_path { get; set; } = string.Empty;
+        
+        [Required]
+        public DateOnly date { get; set; } 
 
         public int UserId { get; set; }
         public User? user { get; set; }
@@ -38,6 +41,7 @@ namespace contracts.storage_contracts.db_models {
                 id = model.id,
                 name = model.name,
                 file_path = model.file_path,
+                date = model.date,
                 UserId = model.UserId,
                 file_format_type = model.file_format_type,
                 document_type = model.document_type,

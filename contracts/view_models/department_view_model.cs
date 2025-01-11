@@ -1,4 +1,5 @@
-﻿using System;
+﻿using contracts.storage_contracts.db_models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

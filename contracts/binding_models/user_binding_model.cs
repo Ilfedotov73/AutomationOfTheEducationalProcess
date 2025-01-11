@@ -20,6 +20,7 @@ namespace contracts.binding_models {
         public DateOnly year_of_award_at { get; set; }
         public string password { get; set; } = string.Empty;
 
-        public List<StudentGroup> studentGroups { get; set; } = new();
+        public Department? department { get; set; }
+        public List<StudentGroup>? studentGroups { get; set; } 
     }
 }

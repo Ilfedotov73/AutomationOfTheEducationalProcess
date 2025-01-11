@@ -12,6 +12,7 @@ namespace contracts.binding_models.document_extension {
         public int id { get; set; }
         public string name { get; set; } = string.Empty;
         public string file_path { get; set; } = $@"C:\Users\Ilfe\Documents\AutomationOfTheEducationalProcess\STATEMENT\";
+        public DateOnly date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public int UserId { get; set; }
         public enum_file_format_type file_format_type { get; set; }
 

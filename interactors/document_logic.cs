@@ -150,7 +150,9 @@ namespace interactors {
                 UserId = model.UserId,
                 file_format_type = model.file_format_type,
                 document_type = model.document_type,
-                TemplateId = model.TemplateId
+                TemplateId = model.TemplateId,
+                user = model.user,
+                template = model.template
             };
         }
     }

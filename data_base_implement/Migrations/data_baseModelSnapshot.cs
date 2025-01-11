@@ -84,6 +84,9 @@ namespace data_base_implement.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<DateOnly>("date")
+                        .HasColumnType("date");
+
                     b.Property<int>("document_type")
                         .HasColumnType("int");
 
@@ -163,7 +166,7 @@ namespace data_base_implement.Migrations
                     b.Property<int>("course_num")
                         .HasColumnType("int");
 
-                    b.Property<int>("group_num")
+                    b.Property<int>("group")
                         .HasColumnType("int");
 
                     b.Property<int>("semester_num")

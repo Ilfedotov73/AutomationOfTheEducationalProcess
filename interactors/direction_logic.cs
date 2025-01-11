@@ -3,11 +3,6 @@ using contracts.interactor_contracts;
 using contracts.search_models;
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace interactors {
     public class direction_logic : Idirection_logic {
@@ -47,6 +42,7 @@ namespace interactors {
                 full_name = model.full_name,
                 alt_name = model.alt_name,
                 DepartmentId = model.DepartmentId,
+                department = model.department,
             };
         }
     }

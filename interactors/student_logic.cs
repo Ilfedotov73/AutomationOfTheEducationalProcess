@@ -47,6 +47,7 @@ namespace interactors {
                 fio = model.fio,
                 StudentGroupId = model.StudentGroupId,
                 grade_book_num = model.grade_book_num,
+                student_group = model.student_group
             };
         }
     }

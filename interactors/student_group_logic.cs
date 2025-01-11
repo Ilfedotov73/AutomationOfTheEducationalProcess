@@ -48,6 +48,8 @@ namespace interactors {
                 course_num = model.course_num,
                 semester_num = model.semester_num,
                 group_num = model.group_num,
+                direction = model.direction,
+                students = model.students
             };
         }
     }

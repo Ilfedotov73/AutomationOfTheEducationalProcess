@@ -60,7 +60,7 @@ namespace worker.implements {
 
             return new st_info {
                 title = model.name,
-                date = DateOnly.FromDateTime(DateTime.Now)
+                date = model.date
             };
         }
     }

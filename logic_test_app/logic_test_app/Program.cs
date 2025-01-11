@@ -1,12 +1,15 @@
 ﻿using contracts.binding_models;
 using contracts.binding_models.document_extension;
 using contracts.interactor_contracts;
+using contracts.presenter_contracts;
 using contracts.search_models;
 using contracts.storage_contracts;
 using contracts.worker_contracts;
 using data_base_implement.implemnts;
 using interactors;
 using Microsoft.Extensions.DependencyInjection;
+using presenter;
+using System.ComponentModel.DataAnnotations;
 using worker.implements;
 using worker.office_package;
 using worker.office_package.office_implements;
@@ -22,9 +25,8 @@ namespace logic_test_app {
             var services = new ServiceCollection();
             ConfiguratuinServices(services);
             _serviceProvider = services.BuildServiceProvider();
-
-            var service = new documentFunc(_serviceProvider.GetService<Idocument_logic>());
-            service.insert();
+            var service = new userViewFunc(_serviceProvider.GetService<Iuser_presenter>());
+            service.select();
         }
         
         private static void ConfiguratuinServices(ServiceCollection service) {
@@ -51,7 +53,17 @@ namespace logic_test_app {
             service.AddTransient<Istudent_group_logic, student_group_logic>();
             service.AddTransient<Istudent_logic, student_logic>();
             service.AddTransient<Itemplate_logic, template_logic>();
-            service.AddTransient<Iuser_logic, user_logic>();            
+            service.AddTransient<Iuser_logic, user_logic>();
+
+            // --------PRESENTERS--------
+            service.AddTransient<Idepartment_presenter, department_presenter>();
+            service.AddTransient<Idirection_presenter, direction_presenter>();
+            service.AddTransient<Idocument_presenter, document_presenter>();
+            service.AddTransient<Ifaculty_presenter, faculty_presenter>();
+            service.AddTransient<Istudent_group_presenter, student_group_presenter>();
+            service.AddTransient<Istudent_presenter, student_presenter>();
+            service.AddTransient<Itemplate_presenter, template_presenter>();
+            service.AddTransient<Iuser_presenter, user_presenter>();
         }
     }
 
@@ -159,9 +171,10 @@ namespace logic_test_app {
 
     public class documentFunc {
         private readonly Idocument_logic _logic;
+        private readonly Idocument_presenter _presenter;
 
-        public documentFunc(Idocument_logic logic) {
-            _logic = logic;
+        public documentFunc(Idocument_presenter presenter) {
+            _presenter = presenter;
         }
 
         public void insert() {
@@ -182,6 +195,180 @@ namespace logic_test_app {
             };
 
             _logic.insert_document(itp);
+        }
+
+        public void info() {
+            var model = _presenter.make_document_presenter(new document_search_model { id = 19 });
+            Console.WriteLine($"{model.id} {model.template_name} {model.author_name} {model.date} {model.name}");
+        }
+
+        public void select() {
+            var models = _presenter.make_document_list_presenter(null);
+            foreach (var model in models) {
+                Console.WriteLine($"{model.id} {model.template_name} {model.author_name} {model.date} {model.name}");
+            }
+        }
+    }
+
+    public class departmentFunc { 
+
+        private readonly Idepartment_presenter _presenter;
+
+        public departmentFunc(Idepartment_presenter presenter) {
+            _presenter = presenter;
+        }
+
+        public void info() {
+            var model = _presenter.make_department_presenter(new department_search_model {
+                id = 1,
+            });
+            Console.WriteLine($"{model.id} {model.name} {model.faculty_name}");
+        }
+
+        public void select() {
+            var models = _presenter.make_department_list_presenter(new department_search_model { faculty_id = 1 });
+            foreach (var model in models) {
+                Console.WriteLine($"{model.id} {model.name} {model.faculty_name}");
+            }
+        }
+    }
+
+    public class directionFunc {
+        private readonly Idirection_presenter _logic;
+
+        public directionFunc(Idirection_presenter logic) {
+            _logic = logic;
+        }
+
+        public void info() {
+            var model = _logic.make_direction_presenter(new direction_search_model {
+                id = 1,
+            });
+            Console.WriteLine($"{model.id} {model.full_name} {model.alt_name} {model.department_name}");
+        }
+
+        public void select() {
+            var models = _logic.make_direction_list_presenter(new direction_search_model {
+                department_id = 1,
+            });
+            foreach (var model in models) {
+                Console.WriteLine($"{model.id} {model.full_name} {model.alt_name} {model.department_name}");
+            }
+        }
+    }
+
+    public class facultyFunc {
+        private readonly Ifaculty_presenter _logic;
+
+        public facultyFunc(Ifaculty_presenter logic) {
+            _logic = logic;
+        }
+
+        public void info() {
+            var model = _logic.make_faculty_presenter(new faculty_search_model { id = 1 });
+            Console.WriteLine($"{model.id} {model.name}");
+        }
+
+        public void select() {
+            var models = _logic.make_faculty_list_presenter();
+            foreach (var model in models) {
+                Console.WriteLine($"{model.id} {model.name}");
+            }
+        }
+    }
+
+    public class studentFunc {
+        private readonly Istudent_presenter _logic;
+
+        public studentFunc(Istudent_presenter logic) {
+            _logic = logic;
+        }
+
+        public void info() {
+            var model = _logic.make_student_presenter(new student_search_model { id = 1 });
+            Console.WriteLine($"{model.id} {model.fio} {model.group}");
+        }
+
+        public void select() {
+            var models = _logic.make_student_list_presenter(new student_search_model {
+                group_id = 1
+            });
+
+            foreach (var model in models) {
+                Console.WriteLine($"{model.id} {model.fio} {model.group}");
+            }
+        }
+    }
+
+    public class studentGroupFunc {
+        private readonly Istudent_group_presenter _logic;
+
+        public studentGroupFunc(Istudent_group_presenter logic) {
+            _logic = logic;
+        }
+
+        public void info() {
+            var model = _logic.make_student_group_presenter(new student_group_search_model { id = 1 });
+            Console.WriteLine($"{model.id} {model.direction_name}-{model.group_num}");
+            foreach (var item in model.students_fio) {
+                Console.WriteLine($"->{item}");
+            }
+        }
+
+        public void select() {
+            var models = _logic.make_student_group_list_presenter(new student_group_search_model { direction_id = 1 });
+            foreach (var model in models) {
+                Console.WriteLine($"{model.id} {model.direction_name}-{model.group_num}");
+                foreach (var item in model.students_fio) {
+                    Console.WriteLine($"->{item}");
+                }
+            }
+        }
+    }
+
+    public class templateViewFunc {
+        private readonly Itemplate_presenter _logic;
+
+        public templateViewFunc(Itemplate_presenter logic) {
+            _logic = logic;
+        }
+
+        public void info() {
+            var model = _logic.make_template_presenter(new template_search_model { id = 6 });
+            Console.WriteLine($"{model.id} {model.name}");
+        }
+
+        public void select() {
+            var models = _logic.make_template_list_presenter();
+            foreach (var item in models) {
+                Console.WriteLine($"{item.id} {item.name}");
+            }
+        }
+    }
+
+    public class userViewFunc {
+        private readonly Iuser_presenter _logic;
+
+        public userViewFunc(Iuser_presenter logic) {
+            _logic = logic;
+        }
+
+        public void info() {
+            var model = _logic.make_user_presenter(new user_search_model { id = 2 });
+            Console.WriteLine($"{model.fio}");
+            foreach (var item in model.groups) {
+                Console.WriteLine(item);
+            }
+        }
+
+        public void select() {
+            var models = _logic.make_user_list_presenter(new user_search_model { department_id = 1 });
+            foreach (var model in models) {
+                Console.WriteLine(model.fio);
+                foreach (var item in model.groups) {
+                    Console.WriteLine(item);
+                }
+            }
         }
     }
 }

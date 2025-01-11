@@ -1,9 +1,5 @@
-﻿using data_models.IModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using contracts.storage_contracts.db_models;
+using data_models.IModels;
 
 namespace contracts.binding_models {
     public class student_binding_model : Istudent {
@@ -11,5 +7,7 @@ namespace contracts.binding_models {
         public string fio { get; set; } = string.Empty;
         public int StudentGroupId { get; set; }
         public int grade_book_num { get; set; }
+
+        public StudentGroup? student_group { get; set; }
     }
 }

@@ -75,7 +75,7 @@ namespace worker.implements {
             // Заполнений полей факт.
             var info = new itp_Info {
                 title = model.name,
-                date = DateOnly.FromDateTime(DateTime.Now),
+                date = model.date
             };
             if (template != null) {
                 info.templateData = _templateWorker.read_temp_file(template);

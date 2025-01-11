@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "worker", "worker\worker.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logic_test_app", "logic_test_app\logic_test_app\logic_test_app.csproj", "{2640AC04-741C-42F1-BCD0-E6328EF3C531}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "presenter", "presenter\presenter.csproj", "{0EBD4FE6-CFB3-4EAF-8D66-058846975D51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{2640AC04-741C-42F1-BCD0-E6328EF3C531}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2640AC04-741C-42F1-BCD0-E6328EF3C531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2640AC04-741C-42F1-BCD0-E6328EF3C531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EBD4FE6-CFB3-4EAF-8D66-058846975D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EBD4FE6-CFB3-4EAF-8D66-058846975D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EBD4FE6-CFB3-4EAF-8D66-058846975D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EBD4FE6-CFB3-4EAF-8D66-058846975D51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

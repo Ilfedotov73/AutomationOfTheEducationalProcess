@@ -1,4 +1,5 @@
-﻿using data_models.IModels;
+﻿using contracts.storage_contracts.db_models;
+using data_models.IModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,8 @@ namespace contracts.binding_models {
         public int course_num { get; set; }
         public int semester_num { get; set; }
         public int group_num { get; set; }
+
+        public Direction? direction { get; set; }
+        public List<Student>? students { get; set; }
     }
 }

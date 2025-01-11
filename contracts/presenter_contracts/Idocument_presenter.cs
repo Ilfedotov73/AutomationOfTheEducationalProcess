@@ -1,14 +1,9 @@
-﻿using contracts.view_moedels;
-using data_models.IModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using contracts.search_models;
+using contracts.view_moedels;
 
 namespace contracts.presenter_contracts {
     public interface Idocument_presenter {
-        public document_view_model make_document_presenter(Idocument model);
-        public List<document_view_model> make_document_list_presenter(List<Idocument> models);
+        public document_view_model make_document_presenter(document_search_model search_model);
+        public List<document_view_model> make_document_list_presenter(document_search_model? search_model);
     }
 }

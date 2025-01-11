@@ -12,8 +12,8 @@ using data_base_implement;
 namespace data_base_implement.Migrations
 {
     [DbContext(typeof(data_base))]
-    [Migration("20241207220224_initMigration")]
-    partial class initMigration
+    [Migration("20250111125459_Migration2")]
+    partial class Migration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,6 +86,9 @@ namespace data_base_implement.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<DateOnly>("date")
+                        .HasColumnType("date");
 
                     b.Property<int>("document_type")
                         .HasColumnType("int");

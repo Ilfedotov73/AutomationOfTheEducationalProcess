@@ -46,7 +46,8 @@ namespace interactors {
             return new() {
                 id = model.id,
                 name = model.name,
-                FacultyId = model.FacultyId
+                FacultyId = model.FacultyId,
+                faculty = model.faculty
             };
         }
     }

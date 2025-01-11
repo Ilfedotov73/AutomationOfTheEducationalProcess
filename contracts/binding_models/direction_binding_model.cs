@@ -1,4 +1,5 @@
-﻿using data_models.IModels;
+﻿using contracts.storage_contracts.db_models;
+using data_models.IModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace contracts.binding_models {
         public string full_name { get; set; } = string.Empty;
         public string alt_name { get; set; } = string.Empty;
         public int DepartmentId { get; set; }
+
+        public Department? department { get; set; }
     }
 }
