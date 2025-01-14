@@ -1,17 +1,17 @@
 ﻿using contracts.binding_models;
-using contracts.binding_models.document_extension;
 using contracts.interactor_contracts;
 using contracts.presenter_contracts;
 using contracts.search_models;
 using contracts.storage_contracts;
+using contracts.view_moedels;
 using contracts.worker_contracts;
 using data_base_implement.implemnts;
 using interactors;
 using Microsoft.Extensions.DependencyInjection;
 using presenter;
-using System.ComponentModel.DataAnnotations;
 using worker.implements;
 using worker.office_package;
+using worker.office_package.helper_models.info_models;
 using worker.office_package.office_implements;
 
 
@@ -25,8 +25,8 @@ namespace logic_test_app {
             var services = new ServiceCollection();
             ConfiguratuinServices(services);
             _serviceProvider = services.BuildServiceProvider();
-            var service = new userViewFunc(_serviceProvider.GetService<Iuser_presenter>());
-            service.select();
+            var service = new documentFunc(_serviceProvider.GetService<Idocument_logic>());
+            service.insert();
         }
         
         private static void ConfiguratuinServices(ServiceCollection service) {
@@ -138,7 +138,41 @@ namespace logic_test_app {
         }
 
         public void insert() {
-            var document = _logic.insert_template(new template_binding_model { name = "itp2025" });
+
+            var user = new user_view_model {
+                fio = "Скалкин Антон Михайлович",
+                department_name = "ИС",
+                position = "Препод",
+                year_of_birth = "01.01.2002",
+                academic_degree = "test",
+                year_of_award_ad = "01.01.2002",
+                academic_title = "test",
+                year_of_award_at = "01.01.2002",
+                password = "123",
+                faculty_name = "ФИСТ"
+            };
+
+            var tempInfo = new itp_temp_info {
+                disciplines_A = ["dis1", "dis2", "dis3"],
+                disciplines_B = ["dis2", "dis2", "dis3", "dis4"],
+
+                workTypes_21 = ["work1", "work2", "work3"],
+                workTypes_22 = ["work1", "work2", "work3", "work4"],
+                workTypes_23 = ["work1", "work2", "work3"],
+                workTypes_24 = ["work1", "work2", "work3"],
+
+                workTypes_31 = ["work1", "work2", "work3", "work4"],
+                workTypes_32 = ["work1", "work2", "work3"],
+
+                workTypes_41 = ["work1", "work2", "work3"],
+                workTypes_42 = ["work1", "work2", "work3"],
+                user_info = user
+            };
+
+            var document = _logic.insert_template(new template_binding_model { 
+                name = "test", 
+                temp_info = tempInfo
+            });
             File.WriteAllBytes(@"C:\Users\Ilfe\Downloads\" + "itp2024.xlsx", document);
         }
 
@@ -173,28 +207,62 @@ namespace logic_test_app {
         private readonly Idocument_logic _logic;
         private readonly Idocument_presenter _presenter;
 
-        public documentFunc(Idocument_presenter presenter) {
-            _presenter = presenter;
+        public documentFunc(Idocument_logic logic) {
+            _logic = logic;
         }
 
         public void insert() {
-            var st = new statement_doc_binding_model {
-                name = "st2025",
+            var data = new itp_info {
+                title = "Индивидуальный план Скалкин",
+                data_11 = [2, 4, 5, 2, 3, 6, 2, 8, 1, 10, 12, 23, 43, 15, 15, 65, 1],
+                data_12 = [2, 4, 5, 2, 3, 6, 2, 8, 1, 10, 12, 23, 43, 15, 43, 13, 5],
+
+                data_21 = new List<(int, int)> { (2, 1), (2, 2), (3, 1) },
+                data_22 = new List<(int, int)> { (2, 1), (2, 2), (3, 1), (3, 1) },
+                data_23 = new List<(int, int)> { (2, 1), (2, 2), (3, 1) },
+                data_24 = new List<(int, int)> { (2, 1), (2, 2), (3, 1) },
+
+                data_31 = new List<(int, int)> { (2, 1), (2, 2), (3, 1), (3, 1) },
+                data_32 = new List<(int, int)> { (2, 1), (2, 2), (3, 1), (3, 1) },
+
+                data_41 = new List<(int, int)> { (2, 1), (2, 2), (3, 1) },
+                data_42 = new List<(int, int)> { (2, 1), (2, 2), (3, 1) },
+
+                data_51 = [3, 4, 1]
+            };
+
+            var data1 = new st_info {
+                date = DateOnly.FromDateTime(DateTime.Now),
+                subject = "РПП",
+                examiner = "Эгов",
+                test = test_type.Экзамен,
+                totalHoursNum = 75,
+                group_info = new student_group_view_model {
+                    faculty_name = "ФИСТ",
+                    group = "ИСЭ-21",
+                    direction_name = "Прикладная информатика",
+                    course_num = 2,
+                    semester_num = 4,
+                    students = new List<(int grade_book_num, string fio)> {
+                        (1, "Гисматуллин Равиль Марсович"),
+                        (2, "Гордеев Игоря Вячеславович"),
+                        (3, "Иванов Иван Иваныч")
+                    }
+                }
+            };
+            
+            var st = new document_binding_model() {
+                name = "Ведеомст2025",
                 UserId = 2,
+                date = DateOnly.FromDateTime(DateTime.Now),
                 file_format_type = data_models.Enums.enum_file_format_type.xlsx,
                 document_type = data_models.Enums.enum_document_type.statement_document,
-                TemplateId = 1,
-                student_group_id = 1
+                TemplateId = 110,
+                data_doc = data1
             };
+            st.setFilePath();
 
-            var itp = new itp_doc_binding_model {
-                name = "itp2024",
-                UserId = 2,
-                file_format_type = data_models.Enums.enum_file_format_type.xlsx,
-                TemplateId = 6,
-            };
-
-            _logic.insert_document(itp);
+            _logic.insert_document(st);
         }
 
         public void info() {
@@ -309,8 +377,8 @@ namespace logic_test_app {
 
         public void info() {
             var model = _logic.make_student_group_presenter(new student_group_search_model { id = 1 });
-            Console.WriteLine($"{model.id} {model.direction_name}-{model.group_num}");
-            foreach (var item in model.students_fio) {
+            Console.WriteLine($"{model.id} {model.direction_name}-{model.group}");
+            foreach (var item in model.students) {
                 Console.WriteLine($"->{item}");
             }
         }
@@ -318,8 +386,8 @@ namespace logic_test_app {
         public void select() {
             var models = _logic.make_student_group_list_presenter(new student_group_search_model { direction_id = 1 });
             foreach (var model in models) {
-                Console.WriteLine($"{model.id} {model.direction_name}-{model.group_num}");
-                foreach (var item in model.students_fio) {
+                Console.WriteLine($"{model.id} {model.direction_name}-{model.group}");
+                foreach (var item in model.students) {
                     Console.WriteLine($"->{item}");
                 }
             }

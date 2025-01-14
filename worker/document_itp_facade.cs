@@ -10,7 +10,7 @@ namespace worker {
 
         private readonly Idocument_worker _documentWorker;
 
-        public delegate void is_function(Idocument model, template_binding_model template);
+        public delegate void is_function(document_binding_model model, template_binding_model template);
         static is_function[]? funcs;
 
         public document_itp_facade(Icreate_docx_file _docxImp, Itemplate_worker _templateWorker) {

@@ -19,5 +19,7 @@ namespace contracts.view_moedels {
         public string password {  get; set; } = string.Empty;
 
         public List<string> groups { get; set; } = new();
+
+        public string[] _fio => fio.Split(new char[] { ' ' });
     }
 }

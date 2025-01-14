@@ -47,8 +47,9 @@ namespace interactors {
             if (obDelete) {
                 return;
             }
-            if (string.IsNullOrEmpty(model.fio)) {
-                throw new ArgumentNullException("user fio is missing", nameof(model.fio));
+            string[] _fio = model.fio.Split(new char[] { ' ' });
+            if (string.IsNullOrEmpty(model.fio) || _fio.Length != 3) {
+                throw new ArgumentNullException("user fio is entered incorrectly", nameof(model.fio));
             }
             if (string.IsNullOrEmpty(model.DepartmentId.ToString())) {
                 throw new ArgumentNullException("user departmentId is missing", nameof(model.DepartmentId));

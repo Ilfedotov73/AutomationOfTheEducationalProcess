@@ -34,7 +34,7 @@ namespace worker.office_package.office_implements {
 
             var fontTitle = new Font();
             fontTitle.Append(new Bold());
-            fontTitle.Append(new FontSize() { Val = 14D });
+            fontTitle.Append(new FontSize() { Val = 18D });
             fontTitle.Append(new DocumentFormat.OpenXml.Office2010.Excel.Color() { Theme = 1U });
             fontTitle.Append(new FontName() { Val = "Times New Roman" });
             fontTitle.Append(new FontFamilyNumbering() { Val = 2 });
@@ -92,7 +92,7 @@ namespace worker.office_package.office_implements {
 
 
             var cell_style_formats = new CellStyleFormats() { Count = 1U };
-            var cell_format_style = new CellFormat() { NumberFormatId = 0U, FontId = 0U, FillId = 0U, BorderId = 0U };
+            var cell_format_style = new CellFormat() { NumberFormatId = 0U, FontId = 0U, FillId = 0U, BorderId = 0U, };
 
             cell_style_formats.Append(cell_format_style);
 
@@ -102,7 +102,12 @@ namespace worker.office_package.office_implements {
                 FontId = 0U, FillId = 0U, 
                 BorderId = 0U, 
                 FormatId = 0U,                                 
-                ApplyFont = true 
+                ApplyFont = true ,
+                Alignment = new Alignment {
+                    Vertical = VerticalAlignmentValues.Center,
+                    WrapText = true,
+                    Horizontal = HorizontalAlignmentValues.Center
+                }
             };
 
             var cell_format_font_and_border = new CellFormat() { 
@@ -111,7 +116,13 @@ namespace worker.office_package.office_implements {
                 FillId = 0U, 
                 BorderId = 1U, 
                 FormatId = 0U,
-                ApplyFont = true, ApplyBorder = true 
+                ApplyFont = true, 
+                ApplyBorder = true,
+                Alignment = new Alignment {
+                    Vertical = VerticalAlignmentValues.Center,
+                    WrapText = true,
+                    Horizontal = HorizontalAlignmentValues.Center
+                }
             };
 
             var cell_format_title = new CellFormat() {
@@ -175,7 +186,7 @@ namespace worker.office_package.office_implements {
             };
         }
 
-        void Icreate_xlsx_file.create_xlsx() {
+        void Icreate_xlsx_file.create_xlsx(string[] sheetNameList) {
             _spreadsheet = SpreadsheetDocument.Create(_stream, SpreadsheetDocumentType.Workbook);
             // Создаеам книгу в (в нех хранятся листы)
             var workbookpart = _spreadsheet.AddWorkbookPart();
@@ -192,20 +203,32 @@ namespace worker.office_package.office_implements {
                 _sharedStringTablePart.SharedStringTable = new SharedStringTable();
             }
 
-            // Создаем лист в книгу
-            var worksheet_part = workbookpart.AddNewPart<WorksheetPart>();
-            worksheet_part.Worksheet = new Worksheet(new SheetData());
+            // Добавляем страницы
+            Sheets sheets = _spreadsheet.WorkbookPart.Workbook.AppendChild(new Sheets());
+            for (uint i = 0; i < sheetNameList.Length; i++) {
+                WorksheetPart worksheetpart = workbookpart.AddNewPart<WorksheetPart>();
+                worksheetpart.Worksheet = new Worksheet(new SheetData());
 
-            // Добавляем лист в книгку
-            var sheets = _spreadsheet.WorkbookPart.Workbook.AppendChild(new Sheets());
-            var sheet = new Sheet() {
-                Id = _spreadsheet.WorkbookPart.GetIdOfPart(worksheet_part),
-                SheetId = 1,
-                Name = "Лист"
-            };
+                var sheet = new Sheet() {
+                    Id = _spreadsheet.WorkbookPart.GetIdOfPart(worksheetpart),
+                    SheetId = i + 1,
+                    Name = sheetNameList[(int)i]
+                };
+                sheets.Append(sheet);
+            }
+        }
 
-            sheets.Append(sheet);
-            _worksheet = worksheet_part.Worksheet;
+        void Icreate_xlsx_file.setWorksheet(string sheetName) {
+            var sheet = _spreadsheet.WorkbookPart?.Workbook?.GetFirstChild<Sheets>().Elements<Sheet>().First(s => s.Name == sheetName);
+            if (sheet == null) {
+                return;
+            }
+            string relationshipId = sheet.Id?.Value ?? string.Empty;
+            if (string.IsNullOrEmpty(relationshipId)) {
+                return;
+            }
+            WorksheetPart part = (WorksheetPart)_spreadsheet.WorkbookPart.GetPartById(relationshipId);
+            _worksheet = part.Worksheet;
         }
 
         void Icreate_xlsx_file.insert_cell_in_worksheet(xlsxCellParameters xlsxCellParameters) {

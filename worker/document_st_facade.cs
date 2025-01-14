@@ -9,7 +9,7 @@ namespace worker {
     public class document_st_facade {
         private readonly Idocument_worker _documentWorker;
 
-        public delegate void is_function(Idocument model, template_binding_model? template = null);
+        public delegate void is_function(document_binding_model model, template_binding_model? template = null);
         static is_function[] funcs = {};
 
         public document_st_facade(Icreate_docx_file _docxImp, Icreate_xlsx_file _xlsxImp) {

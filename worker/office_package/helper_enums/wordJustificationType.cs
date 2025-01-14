@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace worker.office_package.helper_enums {
     public enum wordJustificationType {
         Center,
-        Both
+        Both,
+        Left,
+        Right,
     }
 }

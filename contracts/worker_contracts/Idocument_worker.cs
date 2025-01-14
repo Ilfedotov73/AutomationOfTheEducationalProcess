@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace contracts.worker_contracts {
     public interface Idocument_worker {
-        public void create_document_to_docx(Idocument model, template_binding_model? template = null);
-        public void create_document_to_xlsx(Idocument model, template_binding_model? template = null);
-        public Idata_info prepare_data(Idocument model, template_binding_model? template = null);
+        public void create_document_to_docx(document_binding_model model, template_binding_model? template = null);
+        public void create_document_to_xlsx(document_binding_model model, template_binding_model? template = null);
     }
 }

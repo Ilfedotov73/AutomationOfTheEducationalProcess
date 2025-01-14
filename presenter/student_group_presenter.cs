@@ -16,14 +16,16 @@ namespace presenter {
             var model = _logic.get_student_info(search_model);
             var newViewModel = new student_group_view_model {
                 id = model.id,
-                group_num = model.group_num,
-                student_count = model.students.Count(),
-                direction_name = model.direction.alt_name,
-                students_fio = new()
+                faculty_name = model.direction.department.faculty.name,
+                group = model.direction.alt_name + model.group_num.ToString(),
+                direction_name = model.direction.full_name,
+                course_num = model.course_num,
+                semester_num = model.semester_num,
+                students = new()
             };
 
             foreach (var student in model.students) {
-                newViewModel.students_fio.Add(student.fio);
+                newViewModel.students.Add((student.grade_book_num,student.fio));
             }
             return newViewModel;
         }
@@ -37,14 +39,16 @@ namespace presenter {
 
                 var newViewModel = new student_group_view_model {
                     id = item.id,
-                    group_num = item.group_num,
-                    student_count = item.students.Count(),
-                    direction_name = item.direction.alt_name,
-                    students_fio = new()
+                    faculty_name = item.direction.department.faculty.name,
+                    group = item.direction.alt_name + item.group_num.ToString(),
+                    direction_name = item.direction.full_name,
+                    course_num = item.course_num,
+                    semester_num = item.semester_num,
+                    students = new()
                 };
 
                 foreach (var student in item.students) {
-                    newViewModel.students_fio.Add(student.fio);
+                    newViewModel.students.Add((student.grade_book_num,student.fio));
                 }
                 newViewModels.Add(newViewModel);
             }

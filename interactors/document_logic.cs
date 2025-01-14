@@ -25,7 +25,7 @@ namespace interactors {
             _ = new document_st_facade(_docxImp, _xlsxImp);
         }
 
-        public void insert_document(Idocument model) {
+        public void insert_document(document_binding_model model) {
             check_model(model);
 
             switch(model.document_type) {
@@ -50,7 +50,7 @@ namespace interactors {
             }
         }
 
-        public void edit_document(Idocument model, byte[] rewire_data) {
+        public void edit_document(document_binding_model model, byte[] rewire_data) {
             check_model(model);
 
             File.Exists(model.file_path);
@@ -61,7 +61,7 @@ namespace interactors {
             }
         }
 
-        public void delete_document(Idocument model) {
+        public void delete_document(document_binding_model model) {
             check_model(model, true);
  
             File.Exists(model.file_path);
@@ -72,7 +72,7 @@ namespace interactors {
             }
         }
 
-        public void check_model(Idocument model, bool onDelete = false, bool onEdit = false) {
+        public void check_model(document_binding_model model, bool onDelete = false, bool onEdit = false) {
             if (string.IsNullOrEmpty(model.id.ToString())) {
                 throw new ArgumentNullException("document id is missing", nameof(model.id));
             }
@@ -96,7 +96,8 @@ namespace interactors {
                 return;
             }
 
-            var document = _storage.get_document_info(new document_search_model { name = model.name });
+            var document = _storage.get_document_info(new document_search_model { name = model.name, 
+                                                                                file_format_type = model.file_format_type });
             if (document != null) {
                 throw new Exception("the document is already created");
             }

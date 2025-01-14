@@ -1,4 +1,5 @@
 ﻿using contracts.storage_contracts.db_models;
+using contracts.worker_contracts.helper_models;
 using data_models.Enums;
 using data_models.IModels;
 
@@ -15,5 +16,20 @@ namespace contracts.binding_models {
 
         public User? user { get; set; }
         public Template? template { get; set; }
+        public Idata_info? data_doc { get; set; }
+
+        public void setFilePath() {
+            switch(document_type) {
+                case enum_document_type.individual_teacher_plan_document:
+                    file_path = $@"C:\Users\Ilfe\Documents\AutomationOfTheEducationalProcess\INDIVIDUAL TEACHER PLAN\";
+                    return;
+                case enum_document_type.statement_document:
+                    file_path = $@"C:\Users\Ilfe\Documents\AutomationOfTheEducationalProcess\STATEMENT\";
+                    return;
+                default:
+                    file_path = string.Empty;
+                    return;
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace data_base_implement.implemnts {
             if (search_model.direction_id.HasValue) {
                 return context.student_groups
                     .Where(x => x.DirectionId == search_model.direction_id)
-                    .Include(x => x.direction)
+                    .Include(x => x.direction).ThenInclude(x => x.department).ThenInclude(x => x.faculty)
                     .Include(x => x.students)
                     .Include(x => x.users)
                     .ToList();
@@ -27,7 +27,7 @@ namespace data_base_implement.implemnts {
             using var context = new data_base();
             if (search_model.id.HasValue) {
                 return context.student_groups
-                    .Include(x => x.direction)
+                    .Include(x => x.direction).ThenInclude(x => x.department).ThenInclude(x => x.faculty)
                     .Include(x => x.students)
                     .Include(x => x.users)
                     .FirstOrDefault(x => x.id == search_model.id);

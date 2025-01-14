@@ -73,7 +73,7 @@ namespace data_base_implement.implemnts {
                 return context.documets
                     .Include(x => x.user)
                     .Include(x => x.template)
-                    .FirstOrDefault(x => x.name == search_model.name);
+                    .FirstOrDefault(x => x.name == search_model.name && x.file_format_type == search_model.file_format_type);
             }
             if (search_model.id.HasValue) {
                 return context.documets

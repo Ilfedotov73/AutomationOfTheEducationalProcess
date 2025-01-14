@@ -4,7 +4,7 @@ using contracts.worker_contracts.helper_models;
 using data_models.IModels;
 using worker.office_package;
 using worker.office_package.documents_description;
-using worker.office_package.helper_models;
+using worker.office_package.helper_models.info_models;
 
 namespace worker.implements {
     public class st_document_worker : Idocument_worker {
@@ -18,10 +18,13 @@ namespace worker.implements {
             _stXlsx = new(xlsxImp);
         } 
 
-        public void create_document_to_docx(Idocument model, template_binding_model? template = null) {
-            st_info info = (st_info)prepare_data(model);
+        public void create_document_to_docx(document_binding_model model, template_binding_model? template = null) {
 
-            var document = _stDocx.create_document(info);
+            if (model.data_doc.GetType() != typeof(st_info) || model.data_doc == null) {
+                throw new Exception("mismatch of info types");
+            }
+
+            var document = _stDocx.create_document((st_info)model.data_doc);
             if (document == null) {
                 throw new Exception("Ошибка создания документа");
             }
@@ -32,14 +35,17 @@ namespace worker.implements {
             }
 
             // Записывают массив байт в бинарный файл. Если файл не существует, он создается. Если существует, то перезаписывается
-            model.file_path += $"{model.name}" + $".{model.file_format_type}";
+            model.file_path += $"{model.name}{model.date.Year}" + $".{model.file_format_type}";
             File.WriteAllBytes(model.file_path, document);
         }
 
-        public void create_document_to_xlsx(Idocument model, template_binding_model? template = null) {
-            st_info info = (st_info)prepare_data(model);
+        public void create_document_to_xlsx(document_binding_model model, template_binding_model? template = null) {
 
-            var document = _stXlsx.create_document(info);
+            if (model.data_doc.GetType() != typeof(st_info) || model.data_doc == null) {
+                throw new Exception("mismatch of info types");
+            }
+
+            var document = _stXlsx.create_document((st_info)model.data_doc);
             if (document == null) {
                 throw new Exception("Ошибка создания документа");
             }
@@ -51,17 +57,6 @@ namespace worker.implements {
 
             model.file_path += $"{model.name}" + $".{model.file_format_type}";
             File.WriteAllBytes(model.file_path, document);
-        }
-
-        public Idata_info prepare_data(Idocument model, template_binding_model? template = null) {
-
-            // todo 
-            // Дополнить для ведомости
-
-            return new st_info {
-                title = model.name,
-                date = model.date
-            };
         }
     }
 }
