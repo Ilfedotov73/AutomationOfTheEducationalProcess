@@ -19,8 +19,11 @@ namespace contracts.binding_models {
         public enum_academic_title academic_title { get; set; }
         public DateOnly year_of_award_at { get; set; }
         public string password { get; set; } = string.Empty;
+        public string email { get; set; } = string.Empty;
 
+        public Faculty? faculty { get; set; }
         public Department? department { get; set; }
-        public List<StudentGroup>? studentGroups { get; set; } 
+        public List<StudentGroup>? studentGroups { get; set; }
+        public List<Template>? templates { get; set; }
     }
 }

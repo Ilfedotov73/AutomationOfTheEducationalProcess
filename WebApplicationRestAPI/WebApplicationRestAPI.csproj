@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\contracts\contracts.csproj" />
+    <ProjectReference Include="..\data_base_implement\data_base_implement.csproj" />
+    <ProjectReference Include="..\interactors\interactors.csproj" />
+    <ProjectReference Include="..\presenter\presenter.csproj" />
+    <ProjectReference Include="..\worker\worker.csproj" />
+  </ItemGroup>
+
+</Project>

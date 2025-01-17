@@ -166,7 +166,7 @@ namespace data_base_implement.Migrations
                     b.Property<int>("course_num")
                         .HasColumnType("int");
 
-                    b.Property<int>("group")
+                    b.Property<int>("group_num")
                         .HasColumnType("int");
 
                     b.Property<int>("semester_num")
@@ -210,6 +210,12 @@ namespace data_base_implement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("document_type")
+                        .HasColumnType("int");
+
                     b.Property<string>("file_path")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -219,6 +225,8 @@ namespace data_base_implement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("templates");
                 });
@@ -239,6 +247,10 @@ namespace data_base_implement.Migrations
 
                     b.Property<int>("academic_title")
                         .HasColumnType("int");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("fio")
                         .IsRequired()
@@ -345,6 +357,17 @@ namespace data_base_implement.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("contracts.storage_contracts.db_models.Template", b =>
+                {
+                    b.HasOne("contracts.storage_contracts.db_models.User", "user")
+                        .WithMany("templates")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("contracts.storage_contracts.db_models.User", b =>
                 {
                     b.HasOne("contracts.storage_contracts.db_models.Department", "department")
@@ -386,6 +409,8 @@ namespace data_base_implement.Migrations
             modelBuilder.Entity("contracts.storage_contracts.db_models.User", b =>
                 {
                     b.Navigation("documents");
+
+                    b.Navigation("templates");
                 });
 #pragma warning restore 612, 618
         }

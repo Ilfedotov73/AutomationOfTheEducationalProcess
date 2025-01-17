@@ -1,0 +1,76 @@
+﻿@{
+	ViewData["Title"] = "Register";
+}
+@using contracts.view_moedels
+@using data_models.Enums
+
+<div class="text-center">
+	<h2 class="display-4">Регистрация</h2>
+</div>
+<form method="post">
+	<div class="row">
+		<div class="col-4">Почта:</div>
+		<div class="col-8"><input type="email" name="Email" /></div>
+	</div>
+	<div class="row">
+		<div class="col-4">Пароль:</div>
+		<div class="col-8"><input type="password" name="password" /></div>
+	</div>
+	<div class="row">
+		<div class="col-4">ФИО:</div>
+		<div class="col-8"><input type="text" name="fio" /></div>
+	</div>
+	<div class="row">
+		<div class="col-4">Кафедра:</div>
+		<div class="col-8">
+			<select name="department" asp-items="@(new SelectList(ViewBag.departments, "id", "name"))"></select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4">Дата рождения:</div>
+		<div class="col-8"><input type="Date" name="yearOfBirth" /></div>
+	</div>
+	<div class="row">
+		<div class="col-4">Должность:</div>
+		<div class="col-8">
+			<select name="position">
+				<option value="@enum_position.teacher">Преподаватель</option>
+				<option value="@enum_position.head_of_department">Зав. кафедры</option>
+				<option value="@enum_position.dean">Декан</option>
+			</select>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-4">Ученая степень:</div>
+		<div class="col-8">
+			<select name="ad">
+				<option value="@enum_academic_degree.none">-</option>
+				<option value="@enum_academic_degree.doctor_of_sciences">Доктор наук</option>
+				<option value="@enum_academic_degree.candidate_of_sciences">Кандидат наук</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4">Год присуждения:</div>
+		<div class="col-8"><input type="date" name="adDate" /></div>
+	</div>
+	<div class="row">
+		<div class="col-4">Ученое звание:</div>
+		<div class="col-8">
+			<select name="at">
+				<option value="@enum_academic_title.none">-</option>
+				<option value="@enum_academic_title.docent">Доцент</option>
+				<option value="@enum_academic_title.professor">Профессор</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4">Год присвоения:</div>
+		<div class="col-8"><input type="date" name="atDate" /></div>
+	</div>
+	<div class="row">
+		<div class="col-8"></div>
+		<div class="col-4"><input type="submit" value="Регистрация" class="btn btn-primary" /></div>
+	</div>
+</form>

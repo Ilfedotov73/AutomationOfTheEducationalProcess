@@ -3,12 +3,6 @@ using contracts.interactor_contracts;
 using contracts.search_models;
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace interactors {
     public class user_logic : Iuser_logic {
@@ -27,7 +21,7 @@ namespace interactors {
         }
 
         public void edit_user(user_binding_model model) {
-            check_model(model);
+            check_model(model, onEdit: true);
             if (_storage.edit_user(model) == false) {
                 throw new Exception("edit operation failed");
             }
@@ -46,10 +40,6 @@ namespace interactors {
             }
             if (obDelete) {
                 return;
-            }
-            string[] _fio = model.fio.Split(new char[] { ' ' });
-            if (string.IsNullOrEmpty(model.fio) || _fio.Length != 3) {
-                throw new ArgumentNullException("user fio is entered incorrectly", nameof(model.fio));
             }
             if (string.IsNullOrEmpty(model.DepartmentId.ToString())) {
                 throw new ArgumentNullException("user departmentId is missing", nameof(model.DepartmentId));
@@ -77,6 +67,11 @@ namespace interactors {
             }
             if (onEdit) {
                 return;
+            }
+
+            string[] _fio = model.fio.Split(new char[] { ' ' });
+            if (string.IsNullOrEmpty(model.fio) || _fio.Length < 3) {
+                throw new ArgumentNullException("user fio is entered incorrectly", nameof(model.fio));
             }
 
             var user = get_user_info(new user_search_model { fio = model.fio });
@@ -120,8 +115,11 @@ namespace interactors {
                 academic_title = model.academic_title,
                 year_of_award_at = model.year_of_award_at,
                 password = model.password,
+                faculty = model.department.faculty,
                 department = model.department,
-                studentGroups = model.student_groups
+                email = model.email,
+                studentGroups = model.student_groups,
+                templates = model.templates,
             };
         }
     }

@@ -52,6 +52,12 @@ namespace data_base_implement.implemnts {
 
         public List<Document> get_document_filltered_list(document_search_model search_model) {
             using var context = new data_base();
+            if (search_model.author_id.HasValue) {
+                return context.documets
+                    .Where(x => x.UserId == search_model.author_id)
+                    .Include(x => x.user)
+                    .Include(x => x.template).ToList();
+            }
             if (search_model.document_type.HasValue) {
                 return context.documets
                     .Where(x => x.document_type == search_model.document_type)

@@ -17,6 +17,9 @@ namespace contracts.view_moedels {
         public string academic_title { get; set; } = string.Empty;
         public string year_of_award_at { get; set; } = string.Empty;
         public string password {  get; set; } = string.Empty;
+        public string email { get; set; } = string.Empty;
+
+        public List<template_view_model> templates { get; set; } = new();
 
         public List<string> groups { get; set; } = new();
 

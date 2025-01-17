@@ -12,11 +12,17 @@ namespace presenter {
             _logic = logic;
         }
 
-        public user_view_model make_user_presenter(user_search_model search_model) {
+        public user_view_model? make_user_presenter(user_search_model search_model) {
             var model = _logic.get_user_info(search_model);
+
+            if (model == null) {
+                return null;
+            }
+
             var newViewModel = new user_view_model {
                 id = model.id,
                 fio = model.fio,
+                faculty_name = model.faculty.name,
                 department_name = model.department.name,
                 position = model.position.ToString(),
                 year_of_birth = model.year_of_birth.ToString(),
@@ -25,9 +31,16 @@ namespace presenter {
                 academic_title = model.academic_title.ToString(),
                 year_of_award_at = model.year_of_award_at.ToString(),
                 password = model.password.ToString(),
-                groups = new()
+                email = model.email,
+                groups = new(),
+                templates = new()
             };
-
+            foreach (var temp in model.templates) {
+                newViewModel.templates.Add(new template_view_model {
+                    id = temp.id,
+                    name = temp.name,
+                });
+            }
             foreach (var item in model.studentGroups) {
                 newViewModel.groups.Add(item.direction.alt_name + "-" + item.group_num.ToString());
             }
@@ -42,6 +55,7 @@ namespace presenter {
                 var newViewModel = new user_view_model {
                     id = item.id,
                     fio = item.fio,
+                    faculty_name = item.faculty.name,
                     department_name = item.department.name,
                     position = item.position.ToString(),
                     year_of_birth = item.year_of_birth.ToString(),
@@ -50,11 +64,19 @@ namespace presenter {
                     academic_title = item.academic_title.ToString(),
                     year_of_award_at = item.year_of_award_at.ToString(),
                     password = item.password.ToString(),
-                    groups = new()
+                    email = item.email,
+                    groups = new(),
+                    templates = new()
                 };
 
                 foreach (var sg in item.studentGroups) {
                     newViewModel.groups.Add(sg.direction.alt_name + "-" + sg.group_num.ToString());
+                }
+                foreach (var temp in item.templates) {
+                    newViewModel.templates.Add(new template_view_model {
+                        id = temp.id,
+                        name = temp.name,
+                    });
                 }
                 newViewModels.Add(newViewModel);
             }

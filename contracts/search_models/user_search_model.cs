@@ -11,5 +11,6 @@ namespace contracts.search_models {
         public int? department_id { get; set; }
         public int? position_id { get; set; }
         public string? password { get; set; }
+        public string? email { get; set; }
     }
 }

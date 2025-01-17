@@ -52,16 +52,12 @@ namespace data_base_implement.implemnts {
         }
 
         public Template? get_template_info(template_search_model search_model) {
-            using var context = new data_base();
+            using var context = new data_base();                
             if (search_model.id.HasValue) {
                 return context.templates
                     .Include(x => x.documents)
+                    .Include(x => x.user)
                     .FirstOrDefault(x => x.id == search_model.id);
-            }
-            if (!string.IsNullOrEmpty(search_model.name)) {
-                return context.templates
-                    .Include(x => x.documents)
-                    .FirstOrDefault(x => x.name == search_model.name);
             }
             return null;
         }

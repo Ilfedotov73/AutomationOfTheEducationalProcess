@@ -2,14 +2,19 @@
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace data_base_implement.implemnts {
     public class db_student_group_storage : Istudent_group_storage {
+
+        public List<StudentGroup> get_student_group_list() {
+            using var context = new data_base();
+            return context.student_groups
+                    .Include(x => x.direction).ThenInclude(x => x.department).ThenInclude(x => x.faculty)
+                    .Include(x => x.students)
+                    .Include(x => x.users)
+                    .ToList();
+        }
+
         public List<StudentGroup> get_student_group_filltered_list(student_group_search_model search_model) {
             using var context = new data_base();
             if (search_model.direction_id.HasValue) {

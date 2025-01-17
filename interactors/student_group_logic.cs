@@ -3,11 +3,6 @@ using contracts.interactor_contracts;
 using contracts.search_models;
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace interactors {
     public class student_group_logic : Istudent_group_logic {
@@ -19,7 +14,7 @@ namespace interactors {
         }
 
         public List<student_group_binding_model> get_student_group_list(student_group_search_model? search_model) {
-            var models = search_model == null ? new() : _storage.get_student_group_filltered_list(search_model);
+            var models = search_model == null ? _storage.get_student_group_list() : _storage.get_student_group_filltered_list(search_model);
             if (models.Count == 0) {
                 return new();
             }

@@ -1,11 +1,7 @@
 ﻿using contracts.binding_models;
+using data_models.Enums;
 using data_models.IModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace contracts.storage_contracts.db_models {
     public class Template : Itemplate {
@@ -19,6 +15,12 @@ namespace contracts.storage_contracts.db_models {
 
         public List<Document> documents { get; set; } = new();
 
+        public int UserId { get; set; }
+        public User? user { get; set; }
+
+        [Required]
+        public enum_document_type document_type { get; set; }
+
         public static Template? insert(template_binding_model? model) {
             if (model == null) {
                 return null;
@@ -27,6 +29,8 @@ namespace contracts.storage_contracts.db_models {
                 id = model.id,
                 name = model.name,
                 file_path = model.file_path,
+                UserId = model.UserId,
+                document_type = model.document_type
             };
         }
 
@@ -35,7 +39,7 @@ namespace contracts.storage_contracts.db_models {
                 return;
             }
             name = model.name;
-            file_path = model.file_path;
+            UserId = model.UserId;
         }
     }
 }

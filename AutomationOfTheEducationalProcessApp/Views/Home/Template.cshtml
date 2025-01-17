@@ -1,0 +1,65 @@
+﻿@using contracts.view_moedels
+@{
+    ViewData["Title"] = "Template";
+}
+@model List<template_view_model>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<div class="text-center">
+    <h1 class="display-4">Шаблоны инд. плана преподавателя</h1>
+</div>
+
+<div class="text-center">
+    @{
+        if (Model == null)
+        {
+            <h3 class="display-4">Авторизируйтесь</h3>
+            return;
+        }
+
+        <p><a class="btn-primary btn-sm" href="TemplateCreate" style="background-color:#62B1D0">Создать шаблон инд. плана преподавателя</a></p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Номер
+                    </th>
+                    <th>
+                        Наименование
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(i => item.id)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(i => item.name)
+                        </th>
+                        <td>
+                            <a class="btn-primary btn-sm" asp-action="ImportTemplate" style="background-color:#BF5B30"
+                                asp-route-id="@item.id" asp-route-name="@item.name">Скачать</a>
+                            <a class="btn-primary btn-sm" asp-action="TemplateFile" style="background-color:#A63100"
+                                asp-route-id="@item.id">Изменить</a>
+                            <a class="btn-primary btn-sm" href="javascript:deleteDoc('@item.id')" style="background-color:#FF7940">Удалить</a>
+                            <a class="btn-primary btn-sm" asp-action="CreateItpDocument" style="background-color:#33CCCC"
+                               asp-route-id="@item.id" >Создать документ</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+<script type="text/javascript">
+    function deleteDoc(_id) {
+        $.post("/Home/DeleteTemplate", { id : _id})
+        window.location.href = "Template";
+    }
+</script>

@@ -1,0 +1,414 @@
+﻿@using contracts.view_moedels
+@{
+    ViewData["Title"] = "TemplateCreate";
+}
+@model user_view_model
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<div class="text-center">
+    <h2 class="display-4">Создание шаблона</h2>
+</div>
+
+<form method="post">
+    <div class="text-center">
+        @{
+            if (Model.position == "teacher")
+            {
+                <h3 class="display-4">Нет прав на создания шаблона</h3>
+                return;
+            }
+            <div class="row">
+                <div class="col-4">Название:</div>
+                <div class="col-8"><input type="text" name="name" /></div>
+            </div>
+            <div class="row">
+                <div class="col-4">Пользователь:</div>
+                <div class="col-8">
+                    <select name="user" asp-items="@(new SelectList(ViewBag.users, "id", "fio"))"></select>
+                </div>
+            </div>
+
+            <table id="dispA" class="table">
+                <thead>
+                    <tr>
+                        <th> Учебная работа - осенний семестр. Дисциплины</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRowA">
+                        <td>
+                            <input name="dispNameA[]" class="form-control" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRowA">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="dispB" class="table">
+                <thead>
+                    <tr>
+                        <th> Учебная работа - осенний семестр. Дисциплины</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRowB">
+                        <td>
+                            <input name="dispNameB[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRowB">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <table id="work21" class="table">
+                <thead>
+                    <tr>
+                        <th> 2.1. Подготовка к лекционным, практическим, семинарским, лабораторным занятиям. Виды работ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRow21">
+                        <td>
+                            <input name="work21[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRow21">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="work22" class="table">
+                <thead>
+                    <tr>
+                        <th> 2.2. Подготовка электронных обучающих ресурсов (ЭОР) в ЭИОС. Виды работ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRow22">
+                        <td>
+                            <input name="work22[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRow22">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="work23" class="table">
+                <thead>
+                    <tr>
+                        <th> 2.3. Использование в учебном процессе электронных обучающих ресурсов (ЭОР). Виды работ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRow23">
+                        <td>
+                            <input name="work23[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRow23">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="work24" class="table">
+                <thead>
+                    <tr>
+                        <th> 2.4. Написание и переработка учебных учебников, учебных пособий и других учебно-методических материалов. Виды работ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRow24">
+                        <td>
+                            <input name="work24[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRow24">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <table id="work31" class="table">
+                <thead>
+                    <tr>
+                        <th> 3.1. Написание и подготовка к изданию монографий, научных статей, докладов, заявок на избретение. Виды работ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRow31">
+                        <td>
+                            <input name="work31[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRow31">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="work32" class="table">
+                <thead>
+                    <tr>
+                        <th> 3.2. Другие виды научно-исследовательских работ. Виды работ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRow32">
+                        <td>
+                            <input name="work32[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRow32">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <table id="work41" class="table">
+                <thead>
+                    <tr>
+                        <th>4.1. Участие в проведении работы по профессиональной ориентации молодежи при поступлении в вуз, исполнение обязанностей, проведение олимпиад, конференций и другие организационно-методические работы. Виды работ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRow41">
+                        <td>
+                            <input name="work41[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRow41">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="work42" class="table">
+                <thead>
+                    <tr>
+                        <th> 4.2. Организационно-методическая работа по физической подготовке. Виды работ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="detailRow42">
+                        <td>
+                            <input name="work42[]" class="form-control" required />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger removeRow">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" id="addRow42">Добавить</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" value="Создать шаблон" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#addRowA').click(function () {
+            var rowCount = $('#dispA tbody tr').length;
+            var newRow = $('.detailRowA').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#dispA tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#dispA tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRowB').click(function () {
+            var rowCount = $('#dispB tbody tr').length;
+            var newRow = $('.detailRowB').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#dispB tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#dispB tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRow21').click(function () {
+            var rowCount = $('#work21 tbody tr').length;
+            var newRow = $('.detailRow21').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#work21 tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#work21 tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRow22').click(function () {
+            var rowCount = $('#work22 tbody tr').length;
+            var newRow = $('.detailRow22').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#work22 tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#work22 tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRow23').click(function () {
+            var rowCount = $('#work23 tbody tr').length;
+            var newRow = $('.detailRow23').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#work23 tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#work23 tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRow24').click(function () {
+            var rowCount = $('#work24 tbody tr').length;
+            var newRow = $('.detailRow24').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#work24 tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#work24 tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRow31').click(function () {
+            var rowCount = $('#work31 tbody tr').length;
+            var newRow = $('.detailRow31').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#work31 tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#work31 tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRow32').click(function () {
+            var rowCount = $('#work32 tbody tr').length;
+            var newRow = $('.detailRow32').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#work32 tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#work32 tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRow41').click(function () {
+            var rowCount = $('#work41 tbody tr').length;
+            var newRow = $('.detailRow41').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#work41 tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#work41 tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#addRow42').click(function () {
+            var rowCount = $('#work42 tbody tr').length;
+            var newRow = $('.detailRow42').first().clone();
+            newRow.find('input').val('');
+            newRow.appendTo($('#work42 tbody'));
+        });
+        $(document).on('click', '.removeRow', function () {
+            if ($('#work42 tbody tr').length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
+</script>

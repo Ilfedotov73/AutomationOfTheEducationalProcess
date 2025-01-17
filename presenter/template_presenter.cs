@@ -17,6 +17,8 @@ namespace presenter {
             var newViewModel = new template_view_model {
                 id = model.id,
                 name = model.name,
+                author_name = model.user.fio,
+                document_type = model.document_type.ToString()
             };
             return newViewModel;
         }

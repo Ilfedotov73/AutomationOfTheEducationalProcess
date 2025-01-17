@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace data_models.Enums {
     public enum enum_academic_title {
         docent,
-        professor
+        professor,
+        none
     }
 }

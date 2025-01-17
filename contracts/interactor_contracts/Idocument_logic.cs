@@ -10,6 +10,6 @@ namespace contracts.interactor_contracts {
         public void delete_document(document_binding_model model);
         public void edit_document(document_binding_model model, byte[] rewire_data);
         public void check_model(document_binding_model model, bool onDelete, bool onEdit);
-        public byte[] on_export_docfile(document_search_model search_odel);
+        public byte[] on_import_docfile(document_search_model search_odel);
     }
 }

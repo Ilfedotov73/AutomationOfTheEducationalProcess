@@ -5,10 +5,8 @@ using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
 using contracts.worker_contracts;
 using data_models.Enums;
-using data_models.IModels;
 using worker;
 using worker.office_package;
-using worker.office_package.documents_description;
 
 namespace interactors {
     public class document_logic : Idocument_logic {
@@ -51,23 +49,25 @@ namespace interactors {
         }
 
         public void edit_document(document_binding_model model, byte[] rewire_data) {
-            check_model(model);
+            var editModel = get_document_info(new document_search_model { id = model.id });
+            check_model(editModel, onEdit:true);
 
-            File.Exists(model.file_path);
-            File.WriteAllBytes(model.file_path, rewire_data);
+            File.Exists(editModel.file_path);
+            File.WriteAllBytes(editModel.file_path, rewire_data);
 
-            if (_storage.edit_docuemnt(model) == false) {
+            if (_storage.edit_docuemnt(editModel) == false) {
                 throw new Exception("edit operation failed in database");
             }
         }
 
         public void delete_document(document_binding_model model) {
-            check_model(model, true);
+            var delModel = get_document_info(new document_search_model { id = model.id });
+            check_model(delModel, true);
  
-            File.Exists(model.file_path);
-            File.Delete(model.file_path);
+            File.Exists(delModel.file_path);
+            File.Delete(delModel.file_path);
 
-            if (_storage.delete_docuemnt(model) == false) {
+            if (_storage.delete_docuemnt(delModel) == false) {
                 throw new Exception("delete operation failed in database");
             }
         }
@@ -133,7 +133,7 @@ namespace interactors {
             return getBindingModel(model);
         }
 
-        public byte[] on_export_docfile(document_search_model search_model) {
+        public byte[] on_import_docfile(document_search_model search_model) {
             var document = get_document_info(search_model);
             if (document == null) {
                 throw new Exception("operation get document is failed");
@@ -153,6 +153,7 @@ namespace interactors {
                 document_type = model.document_type,
                 TemplateId = model.TemplateId,
                 user = model.user,
+                date = model.date,
                 template = model.template
             };
         }

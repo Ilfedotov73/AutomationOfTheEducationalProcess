@@ -54,10 +54,6 @@ namespace contracts.storage_contracts.db_models {
                 return;
             }
             name = model.name;
-            file_path = model.file_path;
-            TemplateId = model.TemplateId;
-            document_type = model.document_type;
-            file_format_type = model .file_format_type;
         }
     }
 }

@@ -1,0 +1,83 @@
+﻿@using contracts.view_moedels
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<document_view_model>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<div class="text-center">
+    <h1 class="display-4">Документы</h1>
+</div>
+
+<div class="text-center">
+    @{
+        if (Model == null) {
+            <h3 class="display-4">Авторизируйтесь</h3>
+            return;
+        }
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Номер
+                    </th>
+                    <th>
+                        Наименование
+                    </th>
+                    <th>
+                        Создал
+                    </th>
+                    <th>
+                        Формат документа
+                    </th>
+                    <th>
+                        Тип документа
+                    </th>
+                    <th>
+                        Дата
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(i => item.id)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(i => item.name)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(i => item.author_name)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(i => item.file_format_type)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(i => item.document_type)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(i => item.date)
+                        </th>
+                        <td>
+                            <a class="btn-primary btn-sm" asp-action="ImportDocument" style="background-color:#0776A0"
+                               asp-route-id="@item.id" asp-route-name="@item.name" asp-route-format="@item.file_format_type">Скачать</a>
+                            <a class="btn-primary btn-sm" asp-action="DocumentFile" style="background-color:#226078"
+                               asp-route-id="@item.id">Загрузить</a>
+                            <a class="btn-primary btn-sm" href="javascript:deleteDoc('@item.id')" style="background-color:#024C68">Удалить</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script type="text/javascript">
+    function deleteDoc(_id) {
+        $.post("/Home/DeleteDocument", { id : _id})
+        window.location.href = "Home";
+    }
+</script>

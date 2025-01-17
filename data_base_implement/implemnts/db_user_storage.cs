@@ -52,9 +52,12 @@ namespace data_base_implement.implemnts {
         public List<User> get_user_list() {
             using var context = new data_base();
             return context.users
-                .Include(x => x.documents).ThenInclude(x => x.template)
-                .Include(x => x.student_groups)
-                .ToList();
+                    .Include(x => x.department).ThenInclude(x => x.faculty)
+                    .Include(x => x.templates)
+                    .Include(x => x.documents).ThenInclude(x => x.template)
+                    .Include(x => x.student_groups).ThenInclude(x => x.students)
+                    .Include(x => x.student_groups).ThenInclude(x => x.direction)
+                    .ToList();
         }
 
         public List<User> get_user_filltered_list(user_search_model search_model) {
@@ -62,7 +65,8 @@ namespace data_base_implement.implemnts {
             if (search_model.department_id.HasValue) {
                 return context.users
                     .Where(x => x.DepartmentId == search_model.department_id)
-                    .Include(x => x.department)
+                    .Include(x => x.department).ThenInclude(x => x.faculty)
+                    .Include(x => x.templates)
                     .Include(x => x.documents).ThenInclude(x => x.template)
                     .Include(x => x.student_groups).ThenInclude(x => x.students)
                     .Include(x => x.student_groups).ThenInclude(x => x.direction)
@@ -73,9 +77,20 @@ namespace data_base_implement.implemnts {
 
         public User? get_user_info(user_search_model search_model) {
             using var context = new data_base();
+            if (!string.IsNullOrEmpty(search_model.password) && !string.IsNullOrEmpty(search_model.email)) {
+                return context.users
+                    .Include(x => x.department).ThenInclude(x => x.faculty)
+                    .Include(x => x.templates)
+                    .Include(x => x.documents).ThenInclude(x => x.template)
+                    .Include(x => x.student_groups).ThenInclude(x => x.students)
+                    .Include(x => x.student_groups).ThenInclude(x => x.direction)
+                    .FirstOrDefault(x => x.password == search_model.password &&
+                                                    x.email == search_model.email);
+            }
             if (search_model.id.HasValue) {
                 return context.users
-                    .Include(x => x.department)
+                    .Include(x => x.department).ThenInclude(x => x.faculty)
+                    .Include(x => x.templates)
                     .Include(x => x.documents).ThenInclude(x => x.template)
                     .Include(x => x.student_groups).ThenInclude(x => x.students)
                     .Include(x => x.student_groups).ThenInclude(x => x.direction)

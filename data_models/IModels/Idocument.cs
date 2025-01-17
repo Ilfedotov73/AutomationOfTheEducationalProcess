@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace data_models.IModels {
     public interface Idocument : Iid {
         string name { get; }
-        string file_path { get; set; }
-        DateOnly date { get; set; }
+        string file_path { get; }
+        DateOnly date { get; }
         int UserId { get; }
         enum_file_format_type file_format_type { get; }
         enum_document_type document_type { get; }

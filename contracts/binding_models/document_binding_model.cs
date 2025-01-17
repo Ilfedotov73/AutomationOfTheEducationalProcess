@@ -8,7 +8,7 @@ namespace contracts.binding_models {
         public int id { get; set; }
         public string name { get; set; } = string.Empty;
         public string file_path { get; set; } = string.Empty;
-        public DateOnly date { get; set; } 
+        public DateOnly date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public int UserId { get; set; }
         public enum_file_format_type file_format_type { get; set; }
         public enum_document_type document_type { get; set; }

@@ -1,0 +1,44 @@
+﻿@using contracts.view_moedels
+@{
+	ViewData["Title"] = "CreateStDocument";
+}
+<div class="text-center">
+    <h2 class="display-4">Создание Ведмости</h2>
+</div>
+
+<form method="post">
+    <div class="row">
+        <div class="col-4">Название документа:</div>
+        <div class="col-8"><input type="text" name="docName" /></div>
+    </div>
+    <div class="row">
+        <div class="col-4">Группа:</div>
+        <div class="col-8">
+            <select name="group" asp-items="@(new SelectList(ViewBag.groups, "id", "group"))"></select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">Предмет:</div>
+        <div class="col-8"><input type="text" name="subject" /></div>
+    </div>
+    <div class="row">
+        <div class="col-4">Экзаменатор:</div>
+        <div class="col-8"><input type="text" name="examiner" /></div>
+    </div>
+    <div class="row">
+        <div class="col-4">Тип испытания:</div>
+        <div class="col-8">
+            <select name="test">
+                <option value="0">Зачет</option>
+                <option value="1">Экзамен</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">Общее кол-во часов:</div>
+        <div class="col-8"><input type="number" name="hours" /></div>
+    </div>
+    <div class="text-end">
+        <input type="submit" value="Создать документ" class="btn btn-primary" style="background-color:#FF6666" />
+    </div>
+</form>

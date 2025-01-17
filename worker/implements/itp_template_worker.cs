@@ -5,6 +5,7 @@ using Microsoft.Office.Interop.Excel;
 using worker.office_package.documents_description.TEMPLATE;
 using worker.office_package.helper_models.info_models;
 using contracts.worker_contracts.helper_models;
+using System.Runtime.InteropServices;
 
 
 namespace worker.implements {
@@ -39,7 +40,8 @@ namespace worker.implements {
         public Idata_info read_temp_file(template_binding_model model) {
 
             Application excel = new();
-            Workbook wb = excel.Workbooks.Open(model.file_path);
+            var workbooks = excel.Workbooks;
+            Workbook wb = workbooks.Open(model.file_path);
             Worksheet ws;
 
             var info = new itp_temp_info();
@@ -111,7 +113,12 @@ namespace worker.implements {
             info.workTypes_41 = str[6];
             info.workTypes_42 = str[7];
 
+            wb.Close();
+            workbooks.Close();
             excel.Quit();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             return info;
         }
     }

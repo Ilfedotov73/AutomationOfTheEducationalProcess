@@ -16,5 +16,6 @@ namespace data_models.IModels {
         enum_academic_title academic_title { get; }
         DateOnly year_of_award_at { get; }
         string password { get; }
+        string email { get; }
     }
 }

@@ -27,30 +27,34 @@ namespace interactors {
         }
 
         public void edit_template(template_binding_model model, byte[] rewire_data, string? new_name = null) {
-            check_model(model,false,true);
 
-            File.Exists(model.file_path);
-            File.WriteAllBytes(model.file_path, rewire_data);
+            var editModel = get_template_info(new template_search_model { id = model.id });
+
+            check_model(editModel, false,true);
+
+            File.Exists(editModel.file_path);
+            File.WriteAllBytes(editModel.file_path, rewire_data);
 
             if (!string.IsNullOrEmpty(new_name)) {
                 string mote_to = new template_binding_model().file_path + $"{new_name}.xlsx";
-                File.Move(model.file_path, mote_to);
-                model.name = new_name;
-                model.file_path = mote_to;
+                File.Move(editModel.file_path, mote_to);
+                editModel.name = new_name;
+                editModel.file_path = mote_to;
             }
 
-            if (_storage.edit_tempalte(model) == false) {
+            if (_storage.edit_tempalte(editModel) == false) {
                 throw new Exception("edit operation failed in database");
             };
         }
 
         public void delete_template(template_binding_model model) {
-            check_model(model, true);
+            var delModel = get_template_info(new template_search_model { id = model.id });
+            check_model(delModel, true);
 
-            File.Exists(model.file_path);
-            File.Delete(model.file_path);
+            File.Exists(delModel.file_path);
+            File.Delete(delModel.file_path);
 
-            if (_storage.delete_template(model) == false) {
+            if (_storage.delete_template(delModel) == false) {
                 throw new Exception("delete operation failed in database");
             }
         }
@@ -109,7 +113,7 @@ namespace interactors {
             return getBindingModel(model);
         }
 
-        public byte[] on_export_template(template_search_model search_model) {
+        public byte[] on_import_template(template_search_model search_model) {
             var model = get_template_info(search_model);
             if (model == null) {
                 throw new Exception("Такого шаблона нет");
@@ -124,6 +128,9 @@ namespace interactors {
                 id = model.id,
                 name = model.name,
                 file_path = model.file_path,
+                UserId = model.UserId,
+                document_type = model.document_type,
+                user = model.user
             };
         }
     }

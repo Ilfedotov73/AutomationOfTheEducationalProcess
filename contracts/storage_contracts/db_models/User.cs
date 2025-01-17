@@ -1,13 +1,7 @@
 ﻿using contracts.binding_models;
 using data_models.Enums;
 using data_models.IModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace contracts.storage_contracts.db_models {
     public class User : Iuser {
@@ -42,6 +36,11 @@ namespace contracts.storage_contracts.db_models {
 
         public List<Document> documents { get; set; } = new();
         public List<StudentGroup> student_groups { get; set; } = new();
+        public List<Template> templates { get; set; } = new();
+
+
+        [EmailAddress, Required]
+        public string email { get; set; } = string.Empty;
 
         public static User? insert(user_binding_model? model) {
             if (model == null) {
@@ -58,6 +57,7 @@ namespace contracts.storage_contracts.db_models {
                 academic_title = model.academic_title,
                 year_of_award_at = model.year_of_award_at,
                 password = model.password,
+                email = model.email
             };
         }
 
@@ -65,13 +65,8 @@ namespace contracts.storage_contracts.db_models {
             if (model == null) {
                 return;
             }
-            fio = model.fio;
-            DepartmentId = model.DepartmentId;
-            position = model.position;
-            academic_degree = model.academic_degree;
-            year_of_award_ad = model.year_of_award_at;
-            academic_title = model.academic_title;
-            year_of_award_at = model.year_of_award_at;
+            email = model.email;
+            password = model.password;
         }
     }
 }

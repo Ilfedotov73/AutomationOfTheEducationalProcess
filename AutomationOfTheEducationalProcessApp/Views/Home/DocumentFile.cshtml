@@ -1,0 +1,39 @@
+﻿@using contracts.view_moedels
+@{
+    ViewData["Title"] = "DocumentFile";
+}
+@model document_view_model
+
+<div class="text-center">
+    <h1 class="display-4">Документ</h1>
+</div>
+
+<div class="text-md-center">
+	<input id="id" type="hidden" name="id" readonly value="@Model.id" />
+</div>
+<div class="row">
+	<div class="col-4">Имя файла:</div>
+	<div class="col-8"><input type="text" name="name" value="@Model.name" readonly /></div>
+</div>
+<div class="row">
+	<div class="col-4">Дата:</div>
+	<div class="col-8"><input type="text" name="name" value="@Model.date" readonly /></div>
+</div>
+<div class="row">
+	<div class="col-4">Автор:</div>
+	<div class="col-8"><input type="text" name="user" value="@Model.author_name" readonly /></div>
+</div>
+<div class="row">
+	<div class="col-4">Формат:</div>
+	<div class="col-8"><input type="text" name="document" value="@Model.file_format_type" readonly /></div>
+</div>
+<div class="row">
+	<div class="col-4">Документ:</div>
+	<div class="col-8"><input type="text" name="document" value="@Model.document_type" readonly /></div>
+</div>
+@using (Html.BeginForm("DocumentFile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<input type="file" name="uploads" />
+	<br>
+	<input class="btn btn-success" type="submit" value="Загрузить" />
+}
