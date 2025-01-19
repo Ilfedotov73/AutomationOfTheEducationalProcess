@@ -4,16 +4,20 @@ using contracts.search_models;
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
 using contracts.worker_contracts;
+using Microsoft.Extensions.Logging;
+using worker;
 
 namespace interactors {
     public class template_logic : Itemplate_logic {
 
         private readonly Itemplate_storage _storage;
         private readonly Itemplate_worker _worker;
+        private readonly ILogger _logger;
         
-        public template_logic(Itemplate_storage storage, Itemplate_worker worker) {
+        public template_logic(Itemplate_storage storage, Itemplate_worker worker, ILogger<Itemplate_logic> logger) {
             _storage = storage;
             _worker = worker;
+            _logger = logger;
         }
 
         public byte[] insert_template(template_binding_model model) {
@@ -45,6 +49,7 @@ namespace interactors {
             if (_storage.edit_tempalte(editModel) == false) {
                 throw new Exception("edit operation failed in database");
             };
+            _logger.LogInformation($"template:{editModel.id} is edited");
         }
 
         public void delete_template(template_binding_model model) {
@@ -57,6 +62,7 @@ namespace interactors {
             if (_storage.delete_template(delModel) == false) {
                 throw new Exception("delete operation failed in database");
             }
+            _logger.LogInformation($"template:{delModel.id} is deleted");
         }
 
         public void check_model(template_binding_model model, bool onDelete = false, bool onEdit = false) {
@@ -81,7 +87,7 @@ namespace interactors {
             if (template != null) {
                 throw new Exception("the template is already created");
             }
-
+            
             char[] invalidPathChars = Path.GetInvalidFileNameChars();
             foreach (char i in invalidPathChars) {
                 if (model.name.Contains(i)) {
@@ -93,8 +99,10 @@ namespace interactors {
         public List<template_binding_model> get_template_list() {
             var models = _storage.get_template_list();
             if (models.Count == 0) {
+                _logger.LogWarning("get_template_list returned an empty list");
                 return new();
             }
+            _logger.LogInformation($"get_template_list:{models.Count} elements");
             List<template_binding_model> bindingModels = new();
             foreach (var model in models) {
                 bindingModels.Add(getBindingModel(model));
@@ -108,8 +116,11 @@ namespace interactors {
             }
             var model = _storage.get_template_info(search_model);
             if (model == null) {
+                _logger.LogWarning("get_template_info returned null");
                 return null;
             }
+            _logger.LogInformation($"get_template_info:{model.id}|name:{model.name}|file_path:{model.file_path}|" +
+                                $"user_id:{model.UserId}|document_type:{model.document_type}");
             return getBindingModel(model);
         }
 

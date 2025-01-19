@@ -5,6 +5,7 @@ using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
 using contracts.worker_contracts;
 using data_models.Enums;
+using Microsoft.Extensions.Logging;
 using worker;
 using worker.office_package;
 
@@ -13,12 +14,14 @@ namespace interactors {
 
         private readonly Idocument_storage _storage;
         private readonly Itemplate_logic _template_logic;
+        private readonly ILogger _logger;
 
         public document_logic(Idocument_storage storage, Itemplate_logic template_logic, 
                                 Icreate_docx_file _docxImp, Icreate_xlsx_file _xlsxImp,
-                                Itemplate_worker _templateWorker) {
+                                Itemplate_worker _templateWorker, ILogger<document_logic> logger) {
             _storage = storage;
             _template_logic = template_logic;
+            _logger = logger;
             _ = new document_itp_facade(_docxImp, _templateWorker);
             _ = new document_st_facade(_docxImp, _xlsxImp);
         }
@@ -34,10 +37,12 @@ namespace interactors {
                     }
                     document_itp_facade.is_function itp_funcs = document_itp_facade.get_function(model.file_format_type);
                     itp_funcs(model, template_info);
+                    _logger.LogInformation("created document as individual teacher plan");
                     break;
                 case enum_document_type.statement_document:
                     document_st_facade.is_function st_funcs = document_st_facade.get_function(model.file_format_type);
                     st_funcs(model);
+                    _logger.LogInformation("created document as statement");
                     break;
                 default:
                     throw new NotImplementedException();
@@ -58,6 +63,7 @@ namespace interactors {
             if (_storage.edit_docuemnt(editModel) == false) {
                 throw new Exception("edit operation failed in database");
             }
+            _logger.LogInformation($"docuemnt:{editModel.id} is edited");
         }
 
         public void delete_document(document_binding_model model) {
@@ -70,6 +76,7 @@ namespace interactors {
             if (_storage.delete_docuemnt(delModel) == false) {
                 throw new Exception("delete operation failed in database");
             }
+            _logger.LogInformation($"docuemnt:{delModel.id} is deleted");
         }
 
         public void check_model(document_binding_model model, bool onDelete = false, bool onEdit = false) {
@@ -113,8 +120,10 @@ namespace interactors {
         public List<document_binding_model> get_document_list(document_search_model? search_model) {
             var models = search_model == null ? _storage.get_document_list() : _storage.get_document_filltered_list(search_model);
             if  (models.Count == 0) {
+                _logger.LogWarning("get_document_list returned an empty list");
                 return new();
             }
+            _logger.LogInformation($"get_document_list:{models.Count} elements");
             List<document_binding_model> bindingModels = new();
             foreach (var model in models) {
                 bindingModels.Add(getBindingModel(model));
@@ -128,8 +137,12 @@ namespace interactors {
             }
             var model = _storage.get_document_info(search_model);
             if (model == null) {
+                _logger.LogWarning("get_document_info returned null");
                 return null;                
             }
+            _logger.LogInformation($"get_document_info:{model.id}|name:{model.name}|file_path:{model.file_path}|" +
+                                    $"document_type:{model.document_type}|file_format_type:{model.file_format_type}|" +
+                                    $"userId:{model.UserId}|templateId:{model.TemplateId}|date_create:{model.date}");
             return getBindingModel(model);
         }
 
@@ -140,6 +153,7 @@ namespace interactors {
             }
 
             byte[] file = File.ReadAllBytes(document.file_path);
+            _logger.LogInformation($"document:{document.id} imported");
             return file;
         }
 

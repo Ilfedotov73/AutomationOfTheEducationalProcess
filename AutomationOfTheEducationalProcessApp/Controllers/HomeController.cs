@@ -2,17 +2,13 @@ using AutomationOfTheEducationalProcessApp.Models;
 using contracts.binding_models;
 using contracts.view_moedels;
 using data_models.Enums;
-using DocumentFormat.OpenXml.Packaging;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using worker.office_package.helper_models.info_models;
 
 namespace AutomationOfTheEducationalProcessApp.Controllers {
     public class HomeController : Controller {
-        private readonly ILogger<HomeController> _logger;
-        public HomeController(ILogger<HomeController> logger) {
-            _logger = logger;
-        }
 
         public IActionResult Index() {
             if (APIclient.user == null) {
@@ -104,12 +100,13 @@ namespace AutomationOfTheEducationalProcessApp.Controllers {
             var memStream = new MemoryStream();
             uploads.OpenReadStream().CopyTo(memStream);
             APIclient.ListPostRequest("api/main/ExportTemplate", memStream.ToArray(), id, null);
-            return Redirect("Template");
+            return RedirectToAction("Template");
         }
 
-        [HttpPost]
-        public void DeleteTemplate(int id) {
+        [HttpGet]
+        public IActionResult DeleteTemplate(int id) {
             APIclient.PostRequest("api/main/DeleteTemplate", new template_binding_model { id = id });
+            return RedirectToAction("Template");
         }
 
         [HttpGet]
@@ -130,7 +127,7 @@ namespace AutomationOfTheEducationalProcessApp.Controllers {
                 UserId = APIclient.user.id,
                 document_type = enum_document_type.statement_document,
                 file_format_type = enum_file_format_type.docx,
-                TemplateId = 1
+                TemplateId = 32
             };
             documentDocx.setFilePath();
             var documentXlsx = new document_binding_model() {
@@ -138,7 +135,7 @@ namespace AutomationOfTheEducationalProcessApp.Controllers {
                 UserId = APIclient.user.id,
                 document_type = enum_document_type.statement_document,
                 file_format_type = enum_file_format_type.xlsx,
-                TemplateId = 1
+                TemplateId = 32
             };
             documentXlsx.setFilePath();
 
@@ -238,11 +235,12 @@ namespace AutomationOfTheEducationalProcessApp.Controllers {
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public void DeleteDocument(int id) {
+        [HttpGet]
+        public IActionResult DeleteDocument(int id) {
             APIclient.PostRequest("api/main/DeleteDocument", new document_binding_model {
                 id = id
             });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -302,6 +300,16 @@ namespace AutomationOfTheEducationalProcessApp.Controllers {
             APIclient.user.password = password;
             APIclient.user.email = email;
             Response.Redirect("Index");
+        }
+
+        [HttpGet]
+        public IActionResult ImportBackup() {
+            var data = APIclient.GetRequest<List<string>>("api/backup/get_backup");
+
+            var bytes = JsonConvert.DeserializeObject<byte[]>(data[0]);
+            var name = JsonConvert.DeserializeObject<string>(data[1]);
+
+            return File(bytes, "application/octet-stream", name);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

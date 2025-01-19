@@ -1,7 +1,5 @@
 ﻿using contracts.binding_models;
 using contracts.worker_contracts;
-using contracts.worker_contracts.helper_models;
-using data_models.IModels;
 using worker.office_package;
 using worker.office_package.documents_description;
 using worker.office_package.helper_models.info_models;

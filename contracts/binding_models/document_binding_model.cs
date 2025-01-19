@@ -21,10 +21,10 @@ namespace contracts.binding_models {
         public void setFilePath() {
             switch(document_type) {
                 case enum_document_type.individual_teacher_plan_document:
-                    file_path = $@"C:\Users\Ilfe\Documents\AutomationOfTheEducationalProcess\INDIVIDUAL TEACHER PLAN\";
+                    file_path = @"C:\Users\Ilfe\Documents\AutomationOfTheEducationalProcess\INDIVIDUAL TEACHER PLAN\";
                     return;
                 case enum_document_type.statement_document:
-                    file_path = $@"C:\Users\Ilfe\Documents\AutomationOfTheEducationalProcess\STATEMENT\";
+                    file_path = @"C:\Users\Ilfe\Documents\AutomationOfTheEducationalProcess\STATEMENT\";
                     return;
                 default:
                     file_path = string.Empty;

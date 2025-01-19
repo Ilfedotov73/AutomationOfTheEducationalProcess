@@ -4,12 +4,11 @@
 }
 @model List<document_view_model>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
 <div class="text-center">
     <h1 class="display-4">Документы</h1>
 </div>
 
+<a class="btn-primary btn-sm" asp-action="ImportBackup" style="background-color:#00B945">Создать/выгрузить копию базы данных</a>
 <div class="text-center">
     @{
         if (Model == null) {
@@ -66,7 +65,8 @@
                                asp-route-id="@item.id" asp-route-name="@item.name" asp-route-format="@item.file_format_type">Скачать</a>
                             <a class="btn-primary btn-sm" asp-action="DocumentFile" style="background-color:#226078"
                                asp-route-id="@item.id">Загрузить</a>
-                            <a class="btn-primary btn-sm" href="javascript:deleteDoc('@item.id')" style="background-color:#024C68">Удалить</a>
+                            <a class="btn-primary btn-sm" asp-action="DeleteDocument" style="background-color:#024C68"
+                               asp-route-id="@item.id">Удалить</a>
                         </td>
                     </tr>
                 }
@@ -74,10 +74,3 @@
         </table>
     }
 </div>
-
-<script type="text/javascript">
-    function deleteDoc(_id) {
-        $.post("/Home/DeleteDocument", { id : _id})
-        window.location.href = "Home";
-    }
-</script>

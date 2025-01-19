@@ -4,8 +4,6 @@
 }
 @model List<template_view_model>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
 <div class="text-center">
     <h1 class="display-4">Шаблоны инд. плана преподавателя</h1>
 </div>
@@ -33,6 +31,9 @@
             <tbody>
                 @foreach (var item in Model)
                 {
+                    @if (item.name == "statement") {
+                        continue;
+                    }
                     <tr>
                         <th>
                             @Html.DisplayFor(i => item.id)
@@ -45,7 +46,8 @@
                                 asp-route-id="@item.id" asp-route-name="@item.name">Скачать</a>
                             <a class="btn-primary btn-sm" asp-action="TemplateFile" style="background-color:#A63100"
                                 asp-route-id="@item.id">Изменить</a>
-                            <a class="btn-primary btn-sm" href="javascript:deleteDoc('@item.id')" style="background-color:#FF7940">Удалить</a>
+                            <a class="btn-primary btn-sm" asp-action="DeleteTemplate" style="background-color:#FF7940"
+                               asp-route-id="@item.id">Удалить</a>
                             <a class="btn-primary btn-sm" asp-action="CreateItpDocument" style="background-color:#33CCCC"
                                asp-route-id="@item.id" >Создать документ</a>
                         </td>
@@ -55,11 +57,3 @@
         </table>
     }
 </div>
-
-
-<script type="text/javascript">
-    function deleteDoc(_id) {
-        $.post("/Home/DeleteTemplate", { id : _id})
-        window.location.href = "Template";
-    }
-</script>

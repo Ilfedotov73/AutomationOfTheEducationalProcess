@@ -33,7 +33,7 @@ namespace worker.implements {
             var document = _itpDocx.create_document((itp_info)model.data_doc, _tempInfo);
             if (document == null) {
                 throw new Exception("Ошибка создания документа");
-            }
+            };
 
             // Создает какталог (если еще не создан)
             if (!Directory.Exists(model.file_path)) {

@@ -13,10 +13,12 @@ namespace WebApplicationRestAPI.Controllers {
 
         private readonly Iuser_logic _userLogic;
         private readonly Iuser_presenter _userPresenter; 
+        private readonly ILogger _logger;
 
-        public UserController(Iuser_logic userLogic, Iuser_presenter userPresenter) {
+        public UserController(Iuser_logic userLogic, Iuser_presenter userPresenter, ILogger<UserController> logger) {
             _userLogic = userLogic;
             _userPresenter = userPresenter;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -25,6 +27,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _userLogic.insert_user(model);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -38,6 +41,7 @@ namespace WebApplicationRestAPI.Controllers {
                 });
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -48,6 +52,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _userLogic.edit_user(model);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -58,6 +63,7 @@ namespace WebApplicationRestAPI.Controllers {
                 return _userPresenter.make_user_presenter(new user_search_model { id = userId }).templates;
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }

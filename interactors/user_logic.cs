@@ -3,14 +3,17 @@ using contracts.interactor_contracts;
 using contracts.search_models;
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
+using Microsoft.Extensions.Logging;
 
 namespace interactors {
     public class user_logic : Iuser_logic {
 
         private readonly Iuser_storage _storage;
+        private readonly ILogger _logger;
 
-        public user_logic(Iuser_storage storage) {
+        public user_logic(Iuser_storage storage, ILogger<user_logic> logger) {
             _storage = storage;
+            _logger = logger;
         }
 
         public void insert_user(user_binding_model model) {
@@ -25,6 +28,7 @@ namespace interactors {
             if (_storage.edit_user(model) == false) {
                 throw new Exception("edit operation failed");
             }
+            _logger.LogInformation($"user:{model.id} is edited");
         }
 
         public void delete_user(user_binding_model model) {
@@ -32,6 +36,7 @@ namespace interactors {
             if (_storage.delete_user(model) == false) {
                 throw new Exception("delete operation failed");
             }
+            _logger.LogInformation($"user:{model.id} is deleted");
         }
 
         public void check_model(user_binding_model model, bool obDelete = false, bool onEdit = false) {
@@ -83,8 +88,10 @@ namespace interactors {
         public List<user_binding_model> get_user_list(user_search_model? search_model) {
             var models = search_model == null ? _storage.get_user_list() : _storage.get_user_filltered_list(search_model);
             if (models.Count == 0) {
+                _logger.LogWarning("get_user_list returned am empty list");
                 return new();
             }
+            _logger.LogInformation($"get_user_list:{models.Count} elements");
             List<user_binding_model> bindingModels = new();
             foreach (var model in models) {
                 bindingModels.Add(getBindingModel(model));
@@ -98,8 +105,14 @@ namespace interactors {
             }
             var model = _storage.get_user_info(search_model);
             if (model == null) {
+                _logger.LogWarning("get_user_info returned null");
                 return null;
             }
+            _logger.LogInformation($"get_user_info:{model.id}|fio:{model.fio}|departmentId{model.DepartmentId}|" +
+                                    $"position:{model.position}|year_of_bith:{model.year_of_birth}" +
+                                    $"|academic_degree:{model.academic_degree}|year_of_award_ad:{model.year_of_award_ad}" +
+                                    $"|academic_title:{model.academic_title}|year_of_award_at:{model.year_of_award_at}" +
+                                    $"|password:{model.password}|email:{model.email}");
             return getBindingModel(model);
         }
 

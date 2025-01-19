@@ -13,7 +13,7 @@ namespace presenter {
         }
 
         public student_group_view_model make_student_group_presenter(student_group_search_model search_model) {
-            var model = _logic.get_student_info(search_model);
+            var model = _logic.get_student_group_info(search_model);
             var newViewModel = new student_group_view_model {
                 id = model.id,
                 faculty_name = model.direction.department.faculty.name,

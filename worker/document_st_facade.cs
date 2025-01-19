@@ -1,7 +1,7 @@
 ﻿using contracts.binding_models;
 using contracts.worker_contracts;
 using data_models.Enums;
-using data_models.IModels;
+using Microsoft.Extensions.Logging;
 using worker.implements;
 using worker.office_package;
 

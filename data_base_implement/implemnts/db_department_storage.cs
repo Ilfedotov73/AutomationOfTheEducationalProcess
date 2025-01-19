@@ -2,11 +2,6 @@
 using contracts.storage_contracts;
 using contracts.storage_contracts.db_models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace data_base_implement.implemnts {
     public class db_department_storage : Idepartment_storage {

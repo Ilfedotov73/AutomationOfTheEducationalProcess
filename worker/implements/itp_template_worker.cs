@@ -5,15 +5,17 @@ using Microsoft.Office.Interop.Excel;
 using worker.office_package.documents_description.TEMPLATE;
 using worker.office_package.helper_models.info_models;
 using contracts.worker_contracts.helper_models;
-using System.Runtime.InteropServices;
+using Microsoft.Extensions.Logging;
 
 
 namespace worker.implements {
     public class itp_template_worker : Itemplate_worker{
 
         private readonly itp_template_to_xlsx _template;
-        public itp_template_worker(Icreate_xlsx_file xlsxImp) {
+        private readonly ILogger _logger;
+        public itp_template_worker(Icreate_xlsx_file xlsxImp, ILogger<itp_template_worker> logger) {
             _template = new(xlsxImp);
+            _logger = logger;
         }   
 
         public byte[] create_template_file(template_binding_model model) {
@@ -25,6 +27,8 @@ namespace worker.implements {
             if (document == null) {
                 throw new Exception("template creatin operation failed");
             }
+            _logger.LogInformation($"document:{model.id} is created|bytes_count:{document.Length}|type={model.document_type}");
+
             // Создает какталог (если еще не создан)
             if (!Directory.Exists(model.file_path)) {
                 Directory.CreateDirectory(model.file_path);
@@ -119,6 +123,8 @@ namespace worker.implements {
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
+
+            _logger.LogInformation($"template:{model.id} is read");
             return info;
         }
     }

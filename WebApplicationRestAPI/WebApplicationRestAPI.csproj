@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.15" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
@@ -15,8 +17,15 @@
     <ProjectReference Include="..\contracts\contracts.csproj" />
     <ProjectReference Include="..\data_base_implement\data_base_implement.csproj" />
     <ProjectReference Include="..\interactors\interactors.csproj" />
+    <ProjectReference Include="..\Mybackup_service\Mybackup_service.csproj" />
     <ProjectReference Include="..\presenter\presenter.csproj" />
     <ProjectReference Include="..\worker\worker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

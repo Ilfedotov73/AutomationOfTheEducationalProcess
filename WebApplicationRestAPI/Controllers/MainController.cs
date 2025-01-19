@@ -26,10 +26,13 @@ namespace WebApplicationRestAPI.Controllers {
 
         private readonly Iuser_presenter _userPresenter;
 
+        private readonly ILogger _logger;
+
         public MainController(Idepartment_presenter departmentPresenter, Idocument_presenter documentPresenter, 
                                 Idocument_logic documentLogic, Itemplate_presenter templaste_presenter, 
                                 Itemplate_logic template_logic, Itemplate_worker templateWorker, 
-                                Iuser_presenter userPresenter, Istudent_group_presenter studentGroupPresenter) {
+                                Iuser_presenter userPresenter, Istudent_group_presenter studentGroupPresenter, 
+                                ILogger<MainController> logger) {
             _departmentPresenter = departmentPresenter;
             
             _documentPresenter = documentPresenter;
@@ -42,6 +45,7 @@ namespace WebApplicationRestAPI.Controllers {
             _userPresenter = userPresenter;
 
             _studentGroupPresenter = studentGroupPresenter;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -56,6 +60,7 @@ namespace WebApplicationRestAPI.Controllers {
                 
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -70,6 +75,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _documentLogic.insert_document(model);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -86,6 +92,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _documentLogic.insert_document(model);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -101,6 +108,7 @@ namespace WebApplicationRestAPI.Controllers {
                 });
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -111,6 +119,7 @@ namespace WebApplicationRestAPI.Controllers {
                 return _documentPresenter.make_document_presenter(new document_search_model { id = documentId });
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -123,6 +132,7 @@ namespace WebApplicationRestAPI.Controllers {
                 });
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -136,6 +146,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _documentLogic.edit_document(new document_binding_model { id = documentId }, bytes);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -146,6 +157,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _documentLogic.delete_document(model);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -160,6 +172,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _templateLogic.insert_template(model);
             }
             catch(Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -170,6 +183,7 @@ namespace WebApplicationRestAPI.Controllers {
                 return _templateLogic.on_import_template(new template_search_model { id = templateId });
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controler error");
                 throw;
             }
         }
@@ -184,6 +198,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _templateLogic.edit_template(new template_binding_model { id = templateId }, bytes);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -194,6 +209,7 @@ namespace WebApplicationRestAPI.Controllers {
                 _templateLogic.delete_template(model);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -204,6 +220,7 @@ namespace WebApplicationRestAPI.Controllers {
                 return _templatePresenter.make_template_list_presenter();
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -214,6 +231,7 @@ namespace WebApplicationRestAPI.Controllers {
                 return _templatePresenter.make_template_presenter(new template_search_model { id = templateId });
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -225,6 +243,7 @@ namespace WebApplicationRestAPI.Controllers {
                 return (itp_temp_info)_templateWorker.read_temp_file(model);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -235,6 +254,7 @@ namespace WebApplicationRestAPI.Controllers {
                 return _userPresenter.make_user_list_presenter(null);
             }
             catch (Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
@@ -245,6 +265,7 @@ namespace WebApplicationRestAPI.Controllers {
                 return _studentGroupPresenter.make_student_group_list_presenter(null);
             }
             catch(Exception ex) {
+                _logger.LogError(ex, "controller error");
                 throw;
             }
         }
